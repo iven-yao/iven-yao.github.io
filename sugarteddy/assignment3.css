@@ -65,7 +65,6 @@ body {
 }
 
 .mid-block {
-    height: 1500px;
     background-color: #fff;
     padding: 50px;
 }
@@ -116,6 +115,11 @@ body {
     vertical-align: middle;
 }
 
+.img-block {
+    background-image: url(/images/image2.png);
+    width: 100%;
+}
+
 footer {
     padding: 50px;
     background-color: #fff;
@@ -125,12 +129,12 @@ footer {
     height: 200px;
     padding: 50px;
     background-color: #af9453;
-    text-align: left;
 }
 
 .footer-block p {
     display: inline-block;
     padding: 0px 15px;
+    text-align: left;
 }
 
 .footer-block .top {
