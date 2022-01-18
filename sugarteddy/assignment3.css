@@ -140,6 +140,8 @@ footer {
 .footer-block .button {
     border: 1px solid;
     padding: 10px;
+    height: 30px;
+    line-height: 30px;
 }
 
 .border-right {
