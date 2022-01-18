@@ -30,10 +30,16 @@ span.right {
     float: right;
 }
 
+.tmp {
+    height: 1000px;
+    background-color: #000;
+}
+
 footer {
     background-color: #af9453;
 }
 
 footer p{
     display: inline-block;
+    vertical-align: top;
 }
