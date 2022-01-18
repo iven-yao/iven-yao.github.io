@@ -74,25 +74,25 @@ body {
     background-image: url(/images/flower.png);
     background-position-x: -50px;
     width: 330px;
-    height: 580px;
+    height: 500px;
 }
 
 .gold-block .title {
     position: relative;
-    top: 100px;
+    top: 50px;
     text-align: center;
     margin: 0px 50px;
 }
 
 .gold-block .description {
     position: relative;
-    top: 200px;
+    top: 150px;
     text-align: center;
 }
 
 .gold-block .button {
     position: relative;
-    top: 250px;
+    top: 200px;
     text-align: center;
     border: 1px solid;
     margin: 0px 50px;
