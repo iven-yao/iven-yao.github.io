@@ -63,15 +63,9 @@ body {
 .top-image {
     background-image: url(/images/image3.png);
     background-attachment: fixed;
-    background-position-y: -400px;
+    background-position-y: -300px;
     right: 0;
     left: 0;
-}
-
-.mid-block {
-    height: 1600px;
-    background-color: #fff;
-    padding: 50px;
 }
 
 .gold-block {
