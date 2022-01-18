@@ -3,8 +3,6 @@ body {
     overflow-x: hidden;
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    padding-left:30px;
-    padding-right:30px;
 }
 
 .topnavbar {
@@ -38,15 +36,29 @@ span.right {
     float: right;
 }
 
+.block {
+    text-align: center;
+    white-space: normal;
+}
+
+.block::before {
+    content:'';
+    display: inline-block;
+    height:100%;
+    vertical-align: middle;
+}
+
+.centered {
+    display: inline-block;
+    vertical-align: middle;
+}
+
 .headerImg {
-    height: 400px;
+    height: 700px;
     background-image: url(/images/image3.png);
-    right: 0;
-    left: 0;
-    text-align: center;}
+}
 
 .headerImg p {
-    margin: auto;
     font-size: 36px;
     font-family:Garamond, serif;
     color: #fff;
