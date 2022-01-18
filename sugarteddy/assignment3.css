@@ -7,8 +7,8 @@ body {
 
 .topnavbar {
     background-color: #fff;
-    height:50px;
-    line-height: 50px;
+    height:80px;
+    line-height: 80px;
     position: fixed;
     right: 0;
     left: 0;
@@ -55,8 +55,9 @@ body {
 }
 
 .top-block {
-    height: 700px;
-    top: 50px;
+    height: 500px;
+    margin-top: 80px;
+    padding-bottom: 200px;
 }
 
 .top-image {
