@@ -27,8 +27,9 @@ body {
     color: #8c7642;
 }
 
-.topnavbar a.gold {
+.topnavbar a.logo {
     color: #af9453;
+    margin-left: 100px;
 }
 
 
@@ -71,8 +72,8 @@ body {
 
 .gold-block {
     background-image: url(/images/flower.png);
-    background-position-x: -45px;
-    width: 320px;
+    background-position-x: -50px;
+    width: 330px;
     height: 580px;
 }
 
@@ -80,6 +81,7 @@ body {
     position: relative;
     top: 100px;
     text-align: center;
+    margin: 0px 50px;
 }
 
 .gold-block .description {
