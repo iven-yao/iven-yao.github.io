@@ -47,6 +47,7 @@ body {
 .centered {
     display: inline-block;
     vertical-align: middle;
+    width: 100%;
 }
 
 .top-block {
