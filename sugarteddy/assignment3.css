@@ -33,3 +33,7 @@ span.right {
 footer {
     background-color: #af9453;
 }
+
+footer p{
+    display: inline-block;
+}
