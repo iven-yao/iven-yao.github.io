@@ -101,6 +101,7 @@ body {
 .flex-block {
     display: flex;
     justify-content: space-between;
+    padding: 0px 50px;
 }
 
 .arr {
@@ -135,7 +136,7 @@ footer {
 
 .footer-block {
     height: 200px;
-    padding: 0px 100px;
+    padding: 0px 50px;
     background-color: #af9453;
 }
 
