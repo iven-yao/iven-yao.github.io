@@ -120,6 +120,7 @@ body {
 .img-block {
     background-image: url(/images/image2.png);
     background-attachment: fixed;
+    background-position-y: 300px;
     height: 600px;
     margin: 50px;
 }
@@ -190,7 +191,7 @@ footer {
 }
 
 .ff-serif {
-    font-family:Garamond, serif;
+    font-family: 'EB Garamond', serif;
 }
 
 .ff-san-serif {
