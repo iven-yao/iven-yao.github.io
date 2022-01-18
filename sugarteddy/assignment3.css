@@ -12,6 +12,8 @@ body {
     right: 0;
     left: 0;
     top: 0;
+    padding-left: 100px;
+    padding-right: 50px;
     z-index: 1;
 }
 
@@ -30,7 +32,6 @@ body {
 
 .topnavbar a.logo {
     color: #af9453;
-    margin-left: 100px;
 }
 
 
