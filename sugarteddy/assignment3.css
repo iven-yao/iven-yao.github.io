@@ -133,9 +133,7 @@ footer {
 
 .footer-block .button {
     border: 1px solid;
-    margin: 50px;
-    padding: 15px;
-    vertical-align: text-bottom;
+    padding: 10px;
 }
 
 .border-right {
