@@ -34,6 +34,7 @@ body {
 
 .block {
     text-align: center;
+    font-size: 0;
 }
 
 .block::before {
@@ -71,6 +72,7 @@ body {
 .gold-block {
     background-image: url(/images/flower.png);
     width: 400px;
+    height: 580px;
     padding: 0px 15px;
 }
 
@@ -92,12 +94,6 @@ body {
     text-align: center;
     border: 1px solid;
     margin: 0px 50px;
-}
-
-
-.img-block {
-    height: 580px;
-    vertical-align: top;
 }
 
 .flex-block {
