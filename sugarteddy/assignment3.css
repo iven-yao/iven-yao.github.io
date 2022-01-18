@@ -29,3 +29,7 @@ body {
 span.right {
     float: right;
 }
+
+footer {
+    background-color: #af9453;
+}
