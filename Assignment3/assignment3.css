@@ -1,0 +1,12 @@
+body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.topnavbar {
+    background-color: #fff;
+}
+
+.topnavbar a {
+    float: inline-end;
+}
