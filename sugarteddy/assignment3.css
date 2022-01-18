@@ -115,18 +115,23 @@ footer {
     height: 200px;
     padding: 50px;
     background-color: #af9453;
+    text-align: left;
 }
 
 .footer-block p {
     display: inline-block;
-    vertical-align: top;
-    color: #fff;
     padding: 0px 15px;
+}
+
+.footer-block .top {
+    vertical-align: top;
 }
 
 .footer-block .button {
     border: 1px solid;
     margin: 50px;
+    padding: 15px;
+    vertical-align: text-bottom;
 }
 
 .border-right {
