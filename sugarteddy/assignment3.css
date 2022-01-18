@@ -97,11 +97,15 @@ body {
 
 .img-block {
     height: 580px;
-    display: inline-block;
     vertical-align: top;
 }
 
-.inline-block{
+.flex-block {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inline-block { 
     display: inline-block;
     vertical-align: middle;
 }
