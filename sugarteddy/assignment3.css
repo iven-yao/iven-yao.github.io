@@ -15,6 +15,7 @@ body {
     text-decoration: none;
     color: #000;
     font-size: 12px;
+    font-weight: bold;
 }
 
 .topnavbar a.logo {
