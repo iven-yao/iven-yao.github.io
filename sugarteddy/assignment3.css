@@ -65,6 +65,7 @@ body {
 }
 
 .mid-block {
+    height: 1540px;
     background-color: #fff;
     padding: 50px;
 }
