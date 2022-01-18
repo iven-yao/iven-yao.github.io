@@ -72,8 +72,9 @@ body {
 
 .gold-block {
     background-image: url(/images/flower.png);
-    background-position-x: -50px;
-    width: 330px;
+    background-position-x: -30px;
+    background-position-y: -40px;
+    width: 340px;
     height: 500px;
 }
 
@@ -92,7 +93,7 @@ body {
 
 .gold-block .button {
     position: relative;
-    top: 200px;
+    top: 180px;
     text-align: center;
     border: 1px solid;
     margin: 0px 50px;
@@ -121,7 +122,7 @@ body {
 .img-block {
     background-image: url(/images/image2.png);
     background-attachment: fixed;
-    height: 680px;
+    height: 600px;
     margin: 50px;
 }
 
