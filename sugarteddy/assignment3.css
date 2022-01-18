@@ -105,6 +105,10 @@ body {
     justify-content: space-between;
 }
 
+.arr {
+    line-height: 320px;
+}
+
 .inline-block { 
     display: inline-block;
     vertical-align: middle;
