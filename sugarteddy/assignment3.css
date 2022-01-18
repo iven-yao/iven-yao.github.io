@@ -2,12 +2,18 @@ body {
     overflow-y: auto;
     overflow-x: hidden;
     font-family: Arial, Helvetica, sans-serif;
-    padding-left:25px;
-    padding-right:25px;
+    margin: 0;
+    padding-left:30px;
+    padding-right:30px;
 }
 
 .topnavbar {
     background-color: #fff;
+    height:50px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
 }
 
 .topnavbar a {
@@ -32,15 +38,29 @@ span.right {
     float: right;
 }
 
+.headerImg {
+    height: 400px;
+    background-image: url(/images/image3.png);
+    right: 0;
+    left: 0;
+    text-align: center;}
+
+.headerImg p {
+    margin: auto;
+    font-size: 36px;
+    font-family:Garamond, serif;
+    color: #fff;
+}
+
 .tmp {
     height: 1000px;
     background-color: #000;
 }
 
 footer {
-    height: 300px;
+    padding: 50px;
+    margin-bottom: 30px;
     background-color: #af9453;
-    align-items: center;
 }
 
 footer p{
