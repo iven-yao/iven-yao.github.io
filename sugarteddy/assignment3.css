@@ -55,6 +55,7 @@ span.right {
 
 .top-block {
     height: 700px;
+    top: 50px;
 }
 
 .top-image {
@@ -63,29 +64,28 @@ span.right {
     position: fixed;
     right: 0;
     left: 0;
-    top: 50px;
     z-index:-1;
 }
 
-.top-block p {
+p.white-serif {
     font-size: 36px;
     font-family:Garamond, serif;
     color: #fff;
 }
 
-.btm-image {
-    background-image: url(/images/image2.png);
-    position:fixed;
-    right: 50px;
-    left: 50px;
-    top: 750px;
-    z-index: -1;
+.mid-block {
+    height: 1500px;
+    background-color: #fff;
+    padding: 50px;
 }
 
-.tmp {
-    height: 1000px;
-    background-color: #000;
-    padding: 50px;
+.gold-block {
+    background-color: #af9453;
+    height: 400px;
+}
+
+.inline-block {
+    display: inline-block;
 }
 
 footer {
@@ -94,6 +94,8 @@ footer {
 }
 
 .footer-block {
+    height: 200px;
+    padding: 50px;
     background-color: #af9453;
 }
 
@@ -104,6 +106,6 @@ footer {
     padding: 0px 15px;
 }
 
-.footer-block p.border-right {
+.border-right {
     border-right: 1px solid;
 }
