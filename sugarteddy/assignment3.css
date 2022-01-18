@@ -32,7 +32,7 @@ body {
     color: #8c7642;
 }
 
-span.right {
+.right {
     float: right;
 }
 
@@ -56,6 +56,7 @@ span.right {
 .top-block {
     height: 700px;
     top: 50px;
+    font-size: 36px;
 }
 
 .top-image {
@@ -68,7 +69,6 @@ span.right {
 }
 
 p.white-serif {
-    font-size: 36px;
     font-family:Garamond, serif;
     color: #fff;
 }
@@ -80,12 +80,40 @@ p.white-serif {
 }
 
 .gold-block {
-    background-color: #af9453;
-    height: 400px;
+    background-image: url(/images/flower.png);
+    padding: 0px 15px;
 }
 
-.inline-block {
+.gold-block .title {
+    position: relative;
+    top: 100px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#fff
+}
+
+.gold-block .description {
+    position: relative;
+    top: 250px;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    color: #fff;
+}
+
+.gold-block .button {
+    position: relative;
+    top: 450px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+    border: 1px solid;
+}
+
+
+.img-block {
+    height: 580px;
     display: inline-block;
+    vertical-align: top;
 }
 
 footer {
