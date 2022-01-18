@@ -38,7 +38,6 @@ body {
 
 .block {
     text-align: center;
-    white-space: normal;
 }
 
 .block::before {
@@ -57,6 +56,8 @@ body {
     height: 700px;
     top: 50px;
     font-size: 36px;
+    font-family:Garamond, serif;
+    color: #fff;
 }
 
 .top-image {
@@ -68,11 +69,6 @@ body {
     z-index:-1;
 }
 
-p.white-serif {
-    font-family:Garamond, serif;
-    color: #fff;
-}
-
 .mid-block {
     height: 1500px;
     background-color: #fff;
@@ -81,7 +77,7 @@ p.white-serif {
 
 .gold-block {
     background-image: url(/images/flower.png);
-    width: 408px;
+    width: 400px;
     padding: 0px 15px;
 }
 
@@ -90,24 +86,27 @@ p.white-serif {
     top: 100px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 30px;
     color:#fff
 }
 
 .gold-block .description {
     position: relative;
-    top: 250px;
+    top: 200px;
     text-align: center;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: Garamond, serif;
+    font-size: 20px;
     color: #fff;
 }
 
 .gold-block .button {
     position: relative;
-    top: 450px;
+    top: 250px;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
     color: #fff;
     border: 1px solid;
+    margin: 0px 50px;
 }
 
 
