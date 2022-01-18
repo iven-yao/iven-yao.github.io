@@ -53,13 +53,21 @@ span.right {
     vertical-align: middle;
 }
 
-.headerImg {
+.top-block {
     height: 700px;
-    background-image: url(/images/image3.png);
-    background-position-y: -400px;
 }
 
-.headerImg p {
+.top-image {
+    background-image: url(/images/image3.png);
+    background-position-y: -400px;
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 50px;
+    z-index:-1;
+}
+
+.top-block p {
     font-size: 36px;
     font-family:Garamond, serif;
     color: #fff;
