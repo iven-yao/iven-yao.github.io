@@ -113,11 +113,16 @@ footer {
     background-color: #af9453;
 }
 
-.footer-block p{
+.footer-block p {
     display: inline-block;
     vertical-align: top;
     color: #fff;
     padding: 0px 15px;
+}
+
+.footer-block .button {
+    border: 1px solid;
+    margin: 50px;
 }
 
 .border-right {
