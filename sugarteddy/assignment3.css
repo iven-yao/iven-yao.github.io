@@ -18,12 +18,12 @@ body {
     font-weight: bold;
 }
 
-.topnavbar a.logo {
+#logo {
     color: #af9453;
 }
 
 .topnavbar a.active {
-    color: #5a4c2b;
+    color: #8c7642;
 }
 
 span.right {
