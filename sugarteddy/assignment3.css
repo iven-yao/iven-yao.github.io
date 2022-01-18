@@ -14,43 +14,6 @@ body {
     top: 0;
 }
 
-.fs-l {
-    font-size: 50px;
-}
-
-.fs-m {
-    font-size: 30px;
-}
-
-.fs-s {
-    font-size: 15px;
-}
-
-.white {
-    color: #fff;
-}
-
-.gold {
-    color: #af9453;
-}
-
-.black {
-    color: #000;
-}
-
-.ff-serif {
-    font-family:Garamond, serif;
-}
-
-.ff-san-serif {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-.right {
-    float: right;
-}
-
 .topnavbar a {
     float: left;
     text-align: center;
@@ -159,4 +122,42 @@ footer {
 
 .border-right {
     border-right: 1px solid;
+}
+
+
+.fs-l {
+    font-size: 50px;
+}
+
+.fs-m {
+    font-size: 30px;
+}
+
+.fs-s {
+    font-size: 15px;
+}
+
+.white {
+    color: #fff;
+}
+
+.gold {
+    color: #af9453;
+}
+
+.black {
+    color: #000;
+}
+
+.ff-serif {
+    font-family:Garamond, serif;
+}
+
+.ff-san-serif {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+.right {
+    float: right;
 }
