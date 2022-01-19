@@ -23,7 +23,7 @@ body {
     text-align: center;
     padding: 0px 30px;
     text-decoration: none;
-    font-weight: bold;
+    /* font-weight: bold; */
     color: #000;
 }
 
@@ -104,8 +104,16 @@ body {
 }
 
 .arr {
-    line-height: 400px;
-    height: 400px;
+    line-height: 270px;
+    height: 270px;
+}
+
+.no-margin {
+    margin: 0;
+}
+
+.no-margin-top {
+    margin-top: 0;
 }
 
 .testimonial-block {
@@ -144,10 +152,12 @@ footer {
     display: inline-block;
     padding: 0px 15px;
     text-align: left;
+    vertical-align: top;
 }
 
-.footer-block .top {
-    vertical-align: top;
+.vl {
+    border-left: 1px solid;
+    height: 55px;
 }
 
 .footer-block .button {
