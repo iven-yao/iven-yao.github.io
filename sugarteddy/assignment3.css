@@ -158,6 +158,7 @@ footer {
 .vl {
     display: inline-block;
     vertical-align: top;
+    margin-top: 16px;
     border-left: 1px solid;
     height: 55px;
 }
