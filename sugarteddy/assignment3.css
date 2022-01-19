@@ -128,7 +128,6 @@ body {
 .img-block {
     background-image: url(/images/image2.png);
     background-attachment: fixed;
-    background-position-y: 300px;
     height: 600px;
     margin: 50px;
 }
@@ -153,6 +152,7 @@ footer {
     padding: 0px 15px;
     text-align: left;
     vertical-align: top;
+    line-height: 1.5;
 }
 
 .vl {
@@ -160,7 +160,7 @@ footer {
     vertical-align: top;
     margin-top: 16px;
     border-left: 1px solid;
-    height: 55px;
+    height: 72px;
 }
 
 .footer-block .button {
