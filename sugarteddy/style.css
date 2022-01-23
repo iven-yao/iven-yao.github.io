@@ -195,6 +195,10 @@ footer {
     letter-spacing: 1.5;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .white {
     color: #fff;
 }
