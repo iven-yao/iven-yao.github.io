@@ -191,8 +191,12 @@ footer {
     font-size: 16px;
 }
 
-.l-space {
-    letter-spacing: 1.5;
+.l-space-l {
+    letter-spacing: 10px;
+}
+
+.l-space-s {
+    letter-spacing: 5px;
 }
 
 .bold {
