@@ -61,7 +61,7 @@ body {
 }
 
 .top-image {
-    background-image: url(/images/image3.png);
+    background-image: url(../images/image3.png);
     background-attachment: fixed;
     background-position-y: -300px;
     right: 0;
@@ -69,7 +69,7 @@ body {
 }
 
 .gold-block {
-    background-image: url(/images/flower.png);
+    background-image: url(../images/flower.png);
     background-position-x: -30px;
     background-position-y: -40px;
     width: 340px;
@@ -126,7 +126,7 @@ body {
 }
 
 .img-block {
-    background-image: url(/images/image2.png);
+    background-image: url(../images/image2.png);
     background-attachment: fixed;
     height: 600px;
     margin: 50px;
