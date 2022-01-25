@@ -23,7 +23,6 @@ body {
     text-align: center;
     padding: 0px 30px;
     text-decoration: none;
-    /* font-weight: bold; */
     color: #000;
 }
 
@@ -70,28 +69,28 @@ body {
 
 .gold-block {
     background-image: url(../images/flower.png);
-    background-position-x: -30px;
-    background-position-y: -40px;
-    width: 360px;
-    height: 500px;
+    background-position-x: -22px;
+    background-position-y: -10px;
+    width: 380px;
+    height: 550px;
 }
 
 .gold-block .title {
     position: relative;
-    top: 50px;
+    top: 80px;
     text-align: center;
     margin: 0px 60px;
 }
 
 .gold-block .description {
     position: relative;
-    top: 150px;
+    top: 160px;
     text-align: center;
 }
 
 .gold-block .button {
     position: relative;
-    top: 180px;
+    top: 200px;
     text-align: center;
     border: 1px solid;
     margin: 0px 60px;
@@ -128,7 +127,7 @@ body {
 .img-block {
     background-image: url(../images/image2.png);
     background-attachment: fixed;
-    height: 600px;
+    height: 670px;
     margin: 60px;
 }
 
