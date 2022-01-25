@@ -13,8 +13,8 @@ body {
     right: 0;
     left: 0;
     top: 0;
-    padding-left: 70px;
-    padding-right: 20px;
+    padding-left: 90px;
+    padding-right: 30px;
     z-index: 1;
 }
 
@@ -72,7 +72,7 @@ body {
     background-image: url(../images/flower.png);
     background-position-x: -30px;
     background-position-y: -40px;
-    width: 340px;
+    width: 360px;
     height: 500px;
 }
 
@@ -80,7 +80,7 @@ body {
     position: relative;
     top: 50px;
     text-align: center;
-    margin: 0px 50px;
+    margin: 0px 60px;
 }
 
 .gold-block .description {
@@ -94,13 +94,13 @@ body {
     top: 180px;
     text-align: center;
     border: 1px solid;
-    margin: 0px 50px;
+    margin: 0px 60px;
 }
 
 .flex-block {
     display: flex;
     justify-content: space-between;
-    padding: 50px;
+    margin: 60px;
 }
 
 .arr {
@@ -129,21 +129,21 @@ body {
     background-image: url(../images/image2.png);
     background-attachment: fixed;
     height: 600px;
-    margin: 50px;
+    margin: 60px;
 }
 
 .gallery-block {
-    margin: 50px;
+    margin: 60px;
 }
 
 footer {
-    padding: 50px;
+    margin: 60px;
     background-color: #fff;
 }
 
 .footer-block {
     height: 200px;
-    padding: 0px 50px;
+    padding: 0px 60px;
     background-color: #af9453;
 }
 
@@ -217,10 +217,6 @@ footer {
 
 .ff-serif {
     font-family: 'EB Garamond', serif;
-}
-
-.ff-san-serif {
-    font-family: Arial, Helvetica, sans-serif;
 }
 
 .ff-rozha {
