@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import calendar
 import requests
 
 app = Flask(__name__)
+CORS(app)
 api_key="c85otiaad3i9e9m10gk0"
 finnhub_api = "https://finnhub.io/api/v1"
 
