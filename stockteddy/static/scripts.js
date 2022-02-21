@@ -21,7 +21,7 @@ function getProfile(symbol) {
             
             response.json().then(
                 function(data) {
-                    if(data.ticker != symbol) {
+                    if(data.name === undefined) {
                         showError();
                     }
                     else {
@@ -29,7 +29,7 @@ function getProfile(symbol) {
                         document.getElementById("company-name").innerText = data.name;
                         var tickerEle = document.getElementsByClassName("stock-ticker-symbol");
                         for(var i = 0; i < tickerEle.length; i++) {
-                            tickerEle[i].innerText = symbol;
+                            tickerEle[i].innerText = data.ticker;
                         }
                         document.getElementById("stock-exchange-code").innerText = data.exchange;
                         document.getElementById("company-start-date").innerText = data.ipo;
@@ -78,8 +78,10 @@ function getQuote(symbol) {
 function arrow(data) {
     if(data < 0) {
         return " <img src=\"/static/images/RedArrowDown.png\" width=\"15px\" height=\"15px\">"; 
+    } else if (data > 0){
+        return " <img src=\"/static/images/GreenArrowUp.png\" width=\"15px\" height=\"15px\">"; 
     }
-    return " <img src=\"/static/images/GreenArrowUp.png\" width=\"15px\" height=\"15px\">"; 
+    return "";
 }
 
 function getTrend(symbol) {
