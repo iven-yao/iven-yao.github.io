@@ -133,7 +133,7 @@ function getCandle(symbol) {
                             },
                     
                             subtitle: {
-                                text: '<a href="https://finnhub.io/">Source: Finnhub</a>'
+                                text: '<a href="https://finnhub.io/" class="subtitle" target="_blank">Source: Finnhub</a>'
                             },
                     
                             xAxis: {

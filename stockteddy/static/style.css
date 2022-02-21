@@ -178,3 +178,11 @@ body {
     font-weight: bold;
 }
 
+a.subtitle tspan{
+    text-decoration: underline;
+    fill: blue;
+}
+
+a.subtitle:visited tspan {
+    fill: purple;
+}
