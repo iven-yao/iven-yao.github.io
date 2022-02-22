@@ -127,8 +127,6 @@ function getCandle(symbol) {
                         return [ele*1000, data.v[index]];
                     });
 
-                    console.log(priceArray);
-                    console.log(volumeArray);
                     Highcharts.stockChart("chart-container", {
                             title: {
                                 text: 'Stock Price ' + symbol + " " + formattedDate2(new Date())
@@ -260,10 +258,10 @@ function getNews(symbol) {
 }
 
 function dataMissing(data) {
-    if(data.image == null || data.image == "" ||
-        data.headline == null || data.headline == "" ||
-        data.url == null || data.url == "" ||
-        data.datetime == null) {
+    if(data.image == undefined || data.image == "" ||
+        data.headline == undefined || data.headline == "" ||
+        data.url == undefined || data.url == "" ||
+        data.datetime == undefined) {
             return true;
         }
     return false;
@@ -276,7 +274,7 @@ function clearInput() {
 
 function showTab() {
     document.getElementById("error-message").style.display = "none";
-    if(document.getElementById("tab-container").style.display != "inline-block") {
+    if(document.getElementById("tab-container").style.display == "none") {
         document.getElementById("tab-container").style.display = "inline-block";
         document.getElementById("company-btn").className += " active";
         document.getElementById("company").style.display = "block";
