@@ -1,14 +1,14 @@
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function symbolsearch(form) {
-    window.event.preventDefault();
     var symbol = form.symbol.value;
-    
     getProfile(symbol);
     getQuote(symbol);
     getTrend(symbol);
     getCandle(symbol);
     getNews(symbol);
+
+    return false;
 }
 
 function getProfile(symbol) {
