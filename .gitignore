@@ -1,2 +1,4 @@
-
 *.pyc
+/testteddy
+/stockteddy/env
+/stockteddy/__pycache__
