@@ -141,13 +141,11 @@ function getCandle(symbol) {
                             },
 
                             yAxis: [{
-                                lineWidth: 1,
                                 title: {
                                     text:'Stock Price'
                                 },
                                 opposite: false
                             },{
-                                lineWidth: 1,
                                 title: {
                                     text:'Volume'
                                 }
