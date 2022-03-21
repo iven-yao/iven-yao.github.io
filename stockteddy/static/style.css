@@ -185,3 +185,7 @@ a.subtitle tspan{
 a.subtitle:visited tspan {
     fill: purple;
 }
+
+#chart-container {
+    height: 550px;
+}

@@ -127,9 +127,14 @@ function getCandle(symbol) {
                         return [ele*1000, data.v[index]];
                     });
 
+                    var today = new Date();
+                    today.setMonth(today.getMonth() -6);
+                    today.setDate(today.getDate() -1);
+                    var fromDate = new Date(today);
+                    
                     Highcharts.stockChart("chart-container", {
                             title: {
-                                text: 'Stock Price ' + symbol + " " + formattedDate2(new Date())
+                                text: 'Stock Price ' + symbol + " " + formattedDate2(fromDate)
                             },
                     
                             subtitle: {
@@ -236,15 +241,16 @@ function getNews(symbol) {
 
             response.json().then(
                 function(data) {
-                    var newsBlocks = document.getElementsByClassName("news-block");
-                    var j=0;
-                    for(var i = 0; i < newsBlocks.length; i++, j++) {
-                        while(dataMissing(data[j])) j++;
+                    var newsTab = document.getElementById("news");
+                    var innerHTML = "";
+                    for(var i = 0, j = 0; j < data.length, i < 5; i++, j++) {
+                        while(j<data.length && dataMissing(data[j])) j++;
                         var img = "<img src=\""+data[j].image+"\" width=\"100px\" height=\"100px\">";
                         var date = formattedDate(new Date(data[j].datetime*1000));
                         var div = "<div><span class=\"bold\">"+data[j].headline+"</span><br>"+date+"<br><a href=\""+data[j].url+"\">See Original Post</a></div>";
-                        newsBlocks[i].innerHTML = img+div;
+                        innerHTML += '<div class="news-block">'+img+div+'</div>';
                     } 
+                    newsTab.innerHTML = innerHTML;
                 }
             )
         }
