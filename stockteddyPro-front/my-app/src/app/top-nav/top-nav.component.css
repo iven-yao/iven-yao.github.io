@@ -1,0 +1,26 @@
+nav {
+    background-color: navy;
+    height: 50px;
+    top: 0px;
+    position: fixed;
+    width: 100%;
+    padding: 0px 20px;
+    z-index: 1;
+}
+
+nav div {
+    display: inline;
+    line-height: 50px;
+    color: beige;
+}
+
+.right {
+    float: right;
+    padding-right: 20px;
+}
+
+.right a {
+    padding-right:20px;
+    text-decoration: none;
+    color: grey;
+}

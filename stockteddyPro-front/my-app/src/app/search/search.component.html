@@ -1,0 +1,16 @@
+<div class="center">
+    <div class="container">
+        <h3>
+            STOCK SEARCH
+        </h3>
+        <form id="symbol-search" onsubmit="">
+            <div class="search-container">
+                <input class="search-bar" placeholder="Enter stock ticker symbobl" type="text" [(ngModel)]="searchValue" name="ticker">
+                <button type="submit"><img src="assets/images/search-solid.svg"></button>
+                <button type="button" (click)="clearInput()"><img src="assets/images/times-solid.svg"></button>
+            </div>
+            
+        </form>
+    </div>
+        
+</div>
