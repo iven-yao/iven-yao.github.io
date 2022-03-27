@@ -1,3 +1,24 @@
+.container{
+    height: 100%;
+    font-size: 0;
+    position: relative;
+    background-color: lightgrey;
+}
+
+.container::after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url(../../assets/images/background-graph.jpg);
+    background-position-y: -100px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.3;
+}
+
 .center::before {
     height: 100%;
 }
@@ -5,17 +26,16 @@
 .center {
     text-align: center;
     vertical-align: middle;
-    height: 100%;
-    background-image: url(../../assets/images/background-graph.jpg);
-    background-position-y: -200px;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    position: relative;
+    padding-top: 50px;
+    z-index: 1;
 }
 
-.container{
-    padding-top: 5%;
+.title {
+    padding: 40px;
     font-size: 25px;
     font-weight: bold;
+    
 }
 
 button {
