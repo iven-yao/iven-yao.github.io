@@ -1,5 +1,4 @@
 footer {
-    background-color: #d0d0d0;
     text-align: center;
     height: 50px;
     line-height: 50px;
@@ -10,4 +9,8 @@ footer {
 
 footer a {
     text-decoration: none;
+}
+
+footer div {
+    background-color: #d0d0d0;
 }

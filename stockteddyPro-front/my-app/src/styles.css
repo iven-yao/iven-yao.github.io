@@ -7,8 +7,25 @@ body {
     padding: 0px;
     margin: 0px;
     height: 100%;
+    position: relative;
+    background-color: lightgrey;
 }
 
-app-root {
+body::before {
+    content: '';
     height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url(./assets/images/background-graph.jpg);
+    background-position-y: -100px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    opacity: 0.3;
 }
+
+
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

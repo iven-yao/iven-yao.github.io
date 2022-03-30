@@ -1,13 +1,16 @@
 const express = require('express');
 const axios = require('axios').default;
 const url = require('url');
+const path = require('path');
 const app = express();
 const port = 3000;
 const api_key="c85otiaad3i9e9m10gk0";
 const finnhub_api = "https://finnhub.io/api/v1";
 
-app.get('/',(req, res) => res.send("Hello Express"));
+// app.get('/',(req, res) => res.send("Hello Express"));
 app.listen(port, () => console.log(`App listening on port ${port}!`));
+
+app.use(express.static(path.join(__dirname,'../stockteddyPro-front/my-app/dist/my-app')));
 
 // profile2
 app.get('/api/profile2',async (req, res) => {

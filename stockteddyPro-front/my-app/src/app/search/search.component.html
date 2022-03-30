@@ -1,15 +1,24 @@
 <div class="container">
-    <div class="center">
-        <div class="title">
+    <div class="col-sm text-center mt-5">
+        <h1>
             STOCK SEARCH
-        </div>
-        <form id="symbol-search" onsubmit="">
-            <div class="search-container">
-                <input class="search-bar" placeholder="Enter stock ticker symbobl" type="text" [(ngModel)]="searchValue" name="ticker">
-                <button type="submit"><img src="assets/images/search-solid.svg"></button>
-                <button type="button" (click)="clearInput()"><img src="assets/images/times-solid.svg"></button>
-            </div>
-            
-        </form>
+        </h1>
     </div>
+
+    <form id="symbol-search" (ngSubmit)="onSubmit(searchForm.value)" [formGroup]="searchForm" class="mx-auto w-50"> 
+        <div class="input-group align-baseline rounded-pill border border-primary border-3" id="group-outer">
+            <input class="bg-transparent form-control border-0 ml-3 p-0" placeholder="Enter stock ticker symbol" 
+                type="text" formControlName="searchValue" matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngIf="isLoading" class="is-loading"><mat-spinner diameter="30"></mat-spinner></mat-option>
+                <ng-container *ngIf="!isLoading">
+                    <mat-option *ngFor="let result of searchResults.result" [value]="result.symbol">
+                        <span>{{ result.symbol }}</span> <small> | {{result.description}}</small>
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+            <button class="btn shadow-none" type="submit"><span class="fa fa-search text-primary"></span></button>
+            <button class="btn shadow-none" type="button" (click)="clearInput()"><span class="fa fa-times text-primary"></span></button>
+        </div>
+    </form>
 </div>
