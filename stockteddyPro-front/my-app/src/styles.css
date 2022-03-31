@@ -1,31 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-html {
-    height: 100%;
-    font-family: sans-serif;
-}
-body {
-    padding: 0px;
-    margin: 0px;
-    height: 100%;
-    position: relative;
-    background-color: lightgrey;
-}
 
-body::before {
-    content: '';
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
+html, body { min-height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
     background-image: url(./assets/images/background-graph.jpg);
-    background-position-y: -100px;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    opacity: 0.3;
+    background-image: linear-gradient(rgba(222,222,222,0.9), rgba(222,222,222,0.9)), url(./assets/images/background-graph.jpg);
 }
-
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

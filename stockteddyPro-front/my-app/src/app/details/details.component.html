@@ -1,2 +1,136 @@
 <app-search></app-search>
-<p>{{symbol}} details works!</p>
+<mat-spinner
+    *ngIf="
+        (!quote 
+        || !profile2 
+        || !hourlyCandle 
+        || !peers 
+        || !topNews 
+        || !recommendation 
+        || !social 
+        || !earnings) 
+        && validTicker
+    "
+    class="my-5 mx-auto"
+></mat-spinner>
+
+<div class="container my-5 pb-5"
+    *ngIf="
+        (quote 
+        && profile2 
+        && hourlyCandle 
+        && peers 
+        && topNews 
+        && recommendation 
+        && social 
+        && earnings 
+        && validTicker)
+    "
+>
+    <div class="row align-baseline mb-5">
+        <!-- Ticker/Name/Exchange/Buy,Sell -->
+        <div class="col-sm m-0">
+            <p class="h2 m-0">{{profile2.ticker}}</p>
+            <p class="h4 text-muted">{{profile2.name}}</p>
+            <p class="">{{profile2.exchange}}</p>
+            <button type="button" class="btn btn-success">Buy</button>
+        </div>
+        <!-- Logo -->
+        <div class="col-sm text-center">
+            <img src={{profile2.logo}} class="mx-auto w-50" alt="...">
+        </div>
+        <!-- Close Price/Change/Current Time -->
+        <div class="col-sm text-right" [ngClass]="{'text-success':quote.d>0, 'text-danger':quote.d<0}">
+            <p class="h2 m-0">{{quote.c}}</p>
+            <p class="h4">
+                <span class="fa" [ngClass]="{'fa-caret-up':quote.d>0,'fa-caret-down':quote.d<0}"></span>
+                {{quote.d}} ({{quote.dp.toFixed(2)}}%)
+            </p>
+            <p class="text-dark">{{currentTime}}</p>
+        </div>
+    </div>
+    <!-- Market Status Open/Close -->
+    <div class="row text-center">
+        <div class="col-sm">
+            <p *ngIf="marketOpen" class="font-weight-bold text-success">Market is Open</p>
+            <p *ngIf="!marketOpen" class="font-weight-bold text-danger">Market Closed on {{closedTime}}</p>
+        </div>
+    </div>
+    <!-- Tabs -->
+    <mat-tab-group mat-stretch-tabs>
+        <!-- Summary Tab -->
+        <mat-tab label="Summary"> 
+            <div class="container">
+                <div class="row mt-3">
+                    <!-- price & company -->
+                    <div class="col-sm-12 col-md-6">
+                        <p><b>High Price</b>: {{quote.h}}</p>
+                        <p><b>Low Price</b>: {{quote.l}}</p>
+                        <p><b>Open Price</b>: {{quote.o}}</p>
+                        <p><b>Prev. Close</b>: {{quote.pc}}</p>
+                        <p class="h5 text-center"><u>About the company</u></p>
+                        <p><b>IPO Start Date</b>: {{profile2.ipo}}</p>
+                        <p><b>Industry</b>: {{profile2.finnhubIndustry}}</p>
+                        <p><b>Webpage</b>: <a href={{profile2.weburl}} target="_blank">{{profile2.weburl}}</a></p>
+                        <p><b>Company peers</b>:<br></p>
+                        <span *ngFor="let peer of peers">
+                            <a href="/search/{{peer}}">{{peer}},</a>
+                        </span>
+                    </div>
+                    <!-- chart -->
+                    <div class="col-sm-12 col-md-6">
+                        <highcharts-chart
+                            [Highcharts]="Highcharts"
+                            [constructorType]="'stockChart'"
+                            [options]="hourlyChartOptions"
+                            style="display: block; height: 100%; width: 100%;"
+                        >
+                        </highcharts-chart>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- Top News Tab -->
+        <mat-tab label="Top News">
+            <div class="container">
+                <div class="row p-1">
+                    <div
+                        class="col-md-6 col-sm-12 m-2 mx-auto" 
+                        *ngFor="let news of topNews"
+                    >
+                        <div class="card" style="min-height: 150px;">
+                            <div class="card-body row" (click)="openNewsDetail(news)" style="cursor: pointer;">
+                                <div class="col-md-2 m-0 p-0">
+                                    <img
+                                        class="card-img m-0"
+                                        src="{{news.image}}"
+                                        alt=""
+                                    >
+                                </div>
+                                <div class="col">
+                                    <span class="card-title">{{news.headline}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </mat-tab>
+
+        <!-- Charts Tab -->
+        <mat-tab label="Charts"> Charts </mat-tab>
+
+        <!-- Insights Tab -->
+        <mat-tab label="Insights"> Insights </mat-tab>
+    </mat-tab-group>
+      
+</div>
+
+<!-- invalid ticker -->
+<div *ngIf="profile2 && !validTicker" class="container my-5">
+    <div class="alert alert-danger text-center text-dark" role="alert">
+        No data found. Please enter valid Ticker
+    </div>
+</div>

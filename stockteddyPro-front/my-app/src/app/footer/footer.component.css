@@ -1,16 +1,12 @@
 footer {
-    text-align: center;
     height: 50px;
     line-height: 50px;
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     width: 100%;
+    background-color: #d0d0d0;
 }
 
 footer a {
     text-decoration: none;
-}
-
-footer div {
-    background-color: #d0d0d0;
 }

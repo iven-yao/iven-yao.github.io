@@ -17,9 +17,13 @@ app.get('/api/profile2',async (req, res) => {
     console.log("/profile2 call");
     let payload = {symbol:req.query.symbol, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/profile2?"+param);
-    let data = response.data;
-    res.json(data);
+    try{
+        let response = await axios.get(finnhub_api+"/stock/profile2?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch (err) {
+        console.log(err.response.data);
+    }
 })
 
 // candle
@@ -32,14 +36,19 @@ app.get('/api/candle',async (req, res) => {
     var fromDate = new Date(today);
     const fromTimestamp = Math.round(fromDate.getTime()/1000);
     let payload = {symbol:req.query.symbol, 
-                    resolution:1, 
-                    from:fromTimestamp, 
-                    to:toTimestamp, 
+                    resolution:req.query.resolution, 
+                    from:req.query.from, 
+                    to:req.query.to, 
                     token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/candle?"+param);
-    let data = response.data;
-    res.json(data);
+    console.log(param);
+    try{
+        let response = await axios.get(finnhub_api+"/stock/candle?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // quote
@@ -47,9 +56,13 @@ app.get('/api/quote',async (req, res) => {
     console.log("/quote call");
     let payload = {symbol:req.query.symbol, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/quote?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/quote?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // search
@@ -57,9 +70,13 @@ app.get('/api/search',async (req, res) => {
     console.log("/search call");
     let payload = {q:req.query.q, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/search?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/search?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // company-news
@@ -76,10 +93,13 @@ app.get('/api/company-news',async (req, res) => {
                     to: formattedToday,
                     token:api_key};
     const param = new url.URLSearchParams(payload);
-    console.log(param);
-    let response = await axios.get(finnhub_api+"/company-news?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/company-news?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // recommendation-trend
@@ -87,9 +107,13 @@ app.get('/api/recommendation',async (req, res) => {
     console.log("/recommendation call");
     let payload = {symbol:req.query.symbol, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/recommendation?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/stock/recommendation?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // social-sentiment
@@ -97,9 +121,13 @@ app.get('/api/social-sentiment',async (req, res) => {
     console.log("/social-sentiment call");
     let payload = {symbol:req.query.symbol, from: '2022-01-01', token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/social-sentiment?"+param);
-    let data = response.data;
-    res.json(data);
+    try{
+        let response = await axios.get(finnhub_api+"/stock/social-sentiment?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch (err) {
+        console.log(err.response.data);
+    }
 })
 
 // peers
@@ -107,9 +135,13 @@ app.get('/api/peers',async (req, res) => {
     console.log("/peers call");
     let payload = {symbol:req.query.symbol, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/peers?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/stock/peers?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 // earnings
@@ -117,9 +149,13 @@ app.get('/api/earnings',async (req, res) => {
     console.log("/earnings call");
     let payload = {symbol:req.query.symbol, token:api_key};
     const param = new url.URLSearchParams(payload);
-    let response = await axios.get(finnhub_api+"/stock/earnings?"+param);
-    let data = response.data;
-    res.json(data);
+    try {
+        let response = await axios.get(finnhub_api+"/stock/earnings?"+param);
+        let data = response.data;
+        res.json(data);
+    } catch(err) {
+        console.log(err.response.data);
+    }
 })
 
 function formattedDate(date) {

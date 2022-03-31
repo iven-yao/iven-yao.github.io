@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule} from '@angular/router';
 import { MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { AppComponent } from './app.component';
 import { TopNavComponent } from './top-nav/top-nav.component';
@@ -16,13 +17,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { BackendHelperService } from './backend-helper.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DetailsComponent } from './details/details.component';
+import { HighchartsChartModule } from 'highcharts-angular';
+import { NewsComponent } from './news/news.component';
 
 
 const appRoutes: Routes = [
   { path: '', component: SearchComponent},
   { path: 'watchlist', component: WatchlistComponent},
   { path: 'portfolio', component: PortfolioComponent},
-  { path: 'details/:symbol', component: DetailsComponent}
+  { path: 'search/:ticker', component: DetailsComponent}
 ];
 
 @NgModule({
@@ -33,7 +36,8 @@ const appRoutes: Routes = [
     SearchComponent,
     WatchlistComponent,
     PortfolioComponent,
-    DetailsComponent
+    DetailsComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +51,9 @@ const appRoutes: Routes = [
     ),
     BrowserAnimationsModule,
     NgbModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule,
+    HighchartsChartModule
   ],
   providers: [BackendHelperService],
   bootstrap: [AppComponent]

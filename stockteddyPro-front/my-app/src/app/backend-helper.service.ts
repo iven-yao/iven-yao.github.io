@@ -35,13 +35,16 @@ export class BackendHelperService {
 
   getProfile2(symbol:string) : Observable<Profile2DAO> {
     let params = new URLSearchParams();
-    params.append('symbol', symbol);
+    params.append('symbol', symbol??'');
     return this.http.get<Profile2DAO>(this.profile2+params);
   }
 
-  getCandle(symbol:string) : Observable<CandleDAO> {
+  getCandle(symbol:string, resolution:number, from:number, to:number) : Observable<CandleDAO> {
     let params = new URLSearchParams();
     params.append('symbol', symbol);
+    params.append('resolution', resolution.toString());
+    params.append('from', from.toString());
+    params.append('to',to.toString());
     return this.http.get<CandleDAO>(this.candle+params);
   }
 

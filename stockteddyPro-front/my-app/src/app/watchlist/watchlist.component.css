@@ -1,18 +1,1 @@
-.center::before {
-    height: 100%;
-}
 
-.center {
-    text-align: center;
-    vertical-align: middle;
-    position: relative;
-    padding-top: 50px;
-    z-index: 1;
-}
-
-.title {
-    padding: 40px;
-    font-size: 25px;
-    font-weight: bold;
-    
-}
