@@ -33,7 +33,9 @@
             <p class="h2 m-0">{{profile2.ticker}}</p>
             <p class="h4 text-muted">{{profile2.name}}</p>
             <p class="">{{profile2.exchange}}</p>
-            <button type="button" class="btn btn-success">Buy</button>
+            <button type="button" class="btn btn-success"
+                (click)="openTransactionModal(profile2.ticker, profile2.name, quote.c, true)"
+            >Buy</button>
         </div>
         <!-- Logo -->
         <div class="col-sm text-center">
@@ -94,7 +96,7 @@
         <!-- Top News Tab -->
         <mat-tab label="Top News">
             <div class="container">
-                <div class="row p-1">
+                <div class="row mt-2">
                     <div
                         class="col-md-6 col-sm-12 m-2 mx-auto" 
                         *ngFor="let news of topNews"
@@ -120,7 +122,19 @@
         </mat-tab>
 
         <!-- Charts Tab -->
-        <mat-tab label="Charts"> Charts </mat-tab>
+        <mat-tab label="Charts"> 
+            <div class="container">
+                <div class="row mt-3">
+                    <highcharts-chart
+                        [Highcharts]="Highcharts"
+                        [constructorType]="'stockChart'"
+                        [options]="historicalChartOptions"
+                        style="display: block; width: 100%;"
+                    >
+                    </highcharts-chart>
+                </div>
+            </div>
+        </mat-tab>
 
         <!-- Insights Tab -->
         <mat-tab label="Insights"> Insights </mat-tab>

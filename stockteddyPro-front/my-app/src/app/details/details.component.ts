@@ -13,6 +13,11 @@ import * as Highcharts from 'highcharts/highstock';
 import { Options } from 'highcharts/highstock';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsComponent } from '../news/news.component';
+import { TransactionComponent } from '../transaction/transaction.component';
+
+declare var require: any;
+require('highcharts/indicators/indicators')(Highcharts);
+require('highcharts/indicators/volume-by-price')(Highcharts);
 
 @Component({
   selector: 'app-details',
@@ -30,6 +35,7 @@ export class DetailsComponent implements OnInit {
   profile2:Profile2DAO|undefined;
   candle:CandleDAO|undefined;
   hourlyCandle:CandleDAO|undefined;
+  historicalCandle:CandleDAO|undefined;
   peers:[]|undefined;
   topNews:NewsDAO[]|undefined;
   recommendation: RecommendationDAO[]|undefined;
@@ -38,11 +44,13 @@ export class DetailsComponent implements OnInit {
   
   Highcharts = Highcharts;
   hourlyChartOptions: Options = {} as Options;
+  historicalChartOptions: Options = {} as Options;
 
   constructor(
     private route: ActivatedRoute,
     private backendHelper: BackendHelperService,
-    private newsModalService: NgbModal
+    private newsModalService: NgbModal,
+    private transactionService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -53,10 +61,153 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  openTransactionModal(ticker:string, name: string, price:number, isBuy:boolean) {
+    const transactionModal = this.transactionService.open(TransactionComponent);
+    transactionModal.componentInstance.ticker = ticker;
+    transactionModal.componentInstance.name = name;
+    transactionModal.componentInstance.price = price;
+    transactionModal.componentInstance.isBuy = isBuy;
+  }
+
   openNewsDetail(news: NewsDAO){
     const newsModal = this.newsModalService.open(NewsComponent);
     newsModal.componentInstance.news = news;
   }
+
+  createHistoricalChart() {
+    let ohlc = this.historicalCandle?.t.map((val, index) => {
+      return [val*1000, 
+              this.historicalCandle?.o[index],
+              this.historicalCandle?.h[index],
+              this.historicalCandle?.l[index],
+              this.historicalCandle?.c[index],
+            ];
+    });
+
+    let v = this.historicalCandle?.t.map((val, index) => {
+      return [val*1000,
+              this.historicalCandle?.v[index]
+            ];
+    });
+
+    this.historicalChartOptions = {
+      series: [
+        {
+          data: ohlc,
+          type: 'candlestick',
+          name: this.symbol,
+          id: this.symbol,
+          zIndex:2
+        },
+        {
+          data: v,
+          type: 'column',
+          name: 'Volume',
+          id: 'volume',
+          yAxis: 1
+        },
+        {
+          type: 'vbp',
+          linkedTo: this.symbol,
+          params: {
+            volumeSeriesID: 'volume'
+          },
+          dataLabels: {
+            enabled: false
+          },
+          zoneLines: {
+            enabled: false
+          }
+
+        },
+        {
+          type: 'sma',
+          linkedTo: this.symbol,
+          zIndex: 1,
+          marker: {
+            enabled: false
+          }
+        }
+      ],
+      title: {
+        text: this.symbol + " Historical"
+      },
+      subtitle: {
+        text: 'With SMA and Volume by Price technical indicators'
+      },
+      yAxis: [
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'OHLC'
+          },
+          height: '60%',
+          lineWidth: 2,
+          startOnTick: false,
+          endOnTick: false,
+          resize: {
+            enabled: true
+          }
+        },
+        {
+          labels: {
+            align: 'right',
+            x: -3
+          },
+          title: {
+            text: 'Volume'
+          },
+          top: '65%',
+          height: '35%',
+          offset: 0,
+          lineWidth: 2
+        }
+      ],
+      tooltip: {
+        split: true
+      },
+      rangeSelector: {
+        buttons: [
+          {
+            type:'month',
+            count: 1,
+            text:'1m'
+          },
+          {
+            type:'month',
+            count: 3,
+            text:'3m'
+          },
+          {
+            type:'month',
+            count: 6,
+            text:'6m'
+          },
+          {
+            type:'ytd',
+            text:'YTD'
+          },
+          {
+            type:'year',
+            count: 1,
+            text:'1y'
+          },
+          {
+            type:'all',
+            text:'All'
+          }
+        ],
+        selected: 2
+      },
+      time: {
+        timezoneOffset: new Date().getTimezoneOffset()
+      }
+    };
+  }
+
 
   createHourlyChart() {
 
@@ -125,14 +276,22 @@ export class DetailsComponent implements OnInit {
         } else {
           this.marketOpen = false;
         }
-        this.backendHelper.getCandle(ticker,5,values.t-21600,values.t).subscribe(
+        this.backendHelper.getCandle(ticker,'5',values.t-21600,values.t).subscribe(
           (values) => {
             this.hourlyCandle = values;
             this.createHourlyChart();
-            console.log(values);
           }
         );
       }
+    );
+
+    this.backendHelper.getCandle(ticker,'D', 
+      Math.floor(new Date().getTime()/1000-2*365*24*60*60), 
+      Math.floor(new Date().getTime()/1000)).subscribe(
+        (values) => {
+          this.historicalCandle = values;
+          this.createHistoricalChart();
+        }
     );
 
     this.backendHelper.getNews(ticker).subscribe(

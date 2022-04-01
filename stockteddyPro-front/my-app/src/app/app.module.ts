@@ -19,6 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DetailsComponent } from './details/details.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { NewsComponent } from './news/news.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 
 const appRoutes: Routes = [
@@ -37,7 +38,8 @@ const appRoutes: Routes = [
     WatchlistComponent,
     PortfolioComponent,
     DetailsComponent,
-    NewsComponent
+    NewsComponent,
+    TransactionComponent
   ],
   imports: [
     BrowserModule,

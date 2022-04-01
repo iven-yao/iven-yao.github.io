@@ -39,10 +39,10 @@ export class BackendHelperService {
     return this.http.get<Profile2DAO>(this.profile2+params);
   }
 
-  getCandle(symbol:string, resolution:number, from:number, to:number) : Observable<CandleDAO> {
+  getCandle(symbol:string, resolution:string, from:number, to:number) : Observable<CandleDAO> {
     let params = new URLSearchParams();
     params.append('symbol', symbol);
-    params.append('resolution', resolution.toString());
+    params.append('resolution', resolution);
     params.append('from', from.toString());
     params.append('to',to.toString());
     return this.http.get<CandleDAO>(this.candle+params);

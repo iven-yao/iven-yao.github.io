@@ -23,6 +23,7 @@ import { SocialDAO } from '../dao/social-dao';
 export class SearchComponent implements OnInit {
 
   searchResults: SearchDAO = {} as SearchDAO;
+  filteredSearchResult:any|undefined;
   searchValue:string|undefined;
   errorMsg!:string;
   isLoading:boolean = false;
@@ -51,6 +52,9 @@ export class SearchComponent implements OnInit {
           finalize(()=>{this.isLoading=false;})))) 
     ).subscribe((results:any) => {
       this.searchResults = results;
+      this.filteredSearchResult = this.searchResults.result.filter( (res) => (
+        res.type==='Common Stock'&&!res.displaySymbol.includes('.')
+      ));
     });
   }
 
