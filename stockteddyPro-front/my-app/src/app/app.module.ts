@@ -23,10 +23,11 @@ import { TransactionComponent } from './transaction/transaction.component';
 
 
 const appRoutes: Routes = [
-  { path: '', component: SearchComponent},
+  { path: '', redirectTo:'/search/home', pathMatch:'full'},
   { path: 'watchlist', component: WatchlistComponent},
   { path: 'portfolio', component: PortfolioComponent},
-  { path: 'search/:ticker', component: DetailsComponent}
+  { path: 'search/home', component: SearchComponent, pathMatch:'full'},
+  { path: 'search/:ticker', component: DetailsComponent},
 ];
 
 @NgModule({

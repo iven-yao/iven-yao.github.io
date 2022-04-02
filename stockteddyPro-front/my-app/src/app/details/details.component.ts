@@ -14,6 +14,7 @@ import { Options } from 'highcharts/highstock';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsComponent } from '../news/news.component';
 import { TransactionComponent } from '../transaction/transaction.component';
+import { Subscription, timer } from 'rxjs';
 
 declare var require: any;
 require('highcharts/indicators/indicators')(Highcharts);
@@ -41,6 +42,9 @@ export class DetailsComponent implements OnInit {
   recommendation: RecommendationDAO[]|undefined;
   social: SocialDAO|undefined;
   earnings: EarningsDAO[]|undefined;
+  subscription: Subscription|undefined;
+
+  showBoughtAlert:boolean = false;
   
   Highcharts = Highcharts;
   hourlyChartOptions: Options = {} as Options;
@@ -61,12 +65,23 @@ export class DetailsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy():void {
+    this.subscription?.unsubscribe();
+  }
+
+  dismissBoughtAlert() {
+    this.showBoughtAlert = false;
+  }
+
   openTransactionModal(ticker:string, name: string, price:number, isBuy:boolean) {
     const transactionModal = this.transactionService.open(TransactionComponent);
     transactionModal.componentInstance.ticker = ticker;
     transactionModal.componentInstance.name = name;
     transactionModal.componentInstance.price = price;
     transactionModal.componentInstance.isBuy = isBuy;
+    transactionModal.result.then(()=> {
+      this.showBoughtAlert = true;
+    });
   }
 
   openNewsDetail(news: NewsDAO){
@@ -264,26 +279,29 @@ export class DetailsComponent implements OnInit {
   }
 
   fetchAll(ticker: string) {
-    this.backendHelper.getQuote(ticker).subscribe(
-      (values) => {
-        this.quote = values;
-        this.closedTime = this.formattedDateTime(new Date(values.t*1000));
-        this.currentTime = this.formattedDateTime(new Date());
-        
-        let diff = Math.abs(new Date().getTime()-values.t*1000);
-        if( diff <= 60000) {
-          this.marketOpen = true;
-        } else {
-          this.marketOpen = false;
-        }
-        this.backendHelper.getCandle(ticker,'5',values.t-21600,values.t).subscribe(
-          (values) => {
-            this.hourlyCandle = values;
-            this.createHourlyChart();
+    this.subscription = timer(0, 15000).subscribe(() => {
+      this.backendHelper.getQuote(ticker).subscribe(
+        (values) => {
+          this.quote = values;
+          this.closedTime = this.formattedDateTime(new Date(values.t*1000));
+          this.currentTime = this.formattedDateTime(new Date());
+          
+          let diff = Math.abs(new Date().getTime()-values.t*1000);
+          if( diff <= 60000) {
+            this.marketOpen = true;
+          } else {
+            this.marketOpen = false;
           }
-        );
-      }
-    );
+          this.backendHelper.getCandle(ticker,'5',values.t-21600,values.t).subscribe(
+            (values) => {
+              this.hourlyCandle = values;
+              this.createHourlyChart();
+            }
+          );
+        }
+      );
+    });
+    
 
     this.backendHelper.getCandle(ticker,'D', 
       Math.floor(new Date().getTime()/1000-2*365*24*60*60), 
@@ -335,4 +353,5 @@ export class DetailsComponent implements OnInit {
     this.social = undefined;
     this.earnings = undefined;
   }
+
 }

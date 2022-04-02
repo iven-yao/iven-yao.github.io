@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
 
   searchResults: SearchDAO = {} as SearchDAO;
   filteredSearchResult:any|undefined;
-  searchValue:string|undefined;
+  @Input() searchValue:string|undefined;
   errorMsg!:string;
   isLoading:boolean = false;
   searchForm: FormGroup;
@@ -39,7 +39,8 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+    console.log(this.searchValue);
+    this.searchForm = this.formBuilder.group({searchValue:this.searchValue});
     this.searchForm.get('searchValue')?.valueChanges.pipe(
       debounceTime(500),
       tap(()=>{
@@ -65,13 +66,13 @@ export class SearchComponent implements OnInit {
     } 
     else {
       this.router.navigateByUrl('/search/'+form['searchValue'].toUpperCase());
-      this.searchForm.reset();
       this.emptyInput = false;
     } 
   }
 
   clearInput() {
     this.searchForm.reset();
+    this.router.navigateByUrl('/');
   }
 
   dismissAlert() {

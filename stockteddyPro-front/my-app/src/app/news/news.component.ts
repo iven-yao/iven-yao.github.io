@@ -20,11 +20,11 @@ export class NewsComponent implements OnInit {
 
     this.shareToFB = 'https://www.facebook.com/sharer/sharer.php?u=' +
       encodeURIComponent(this.news.url) +
-      '&amp;src=sdkpreparse';
+      '&src=sdkpreparse';
 
     this.shareToTwitter = 'https://twitter.com/intent/tweet?text=' +
       encodeURIComponent(this.news.headline) +
-      '&amp;url=' +
+      '&url=' +
       encodeURIComponent(this.news.url);    
       
     this.dateString = new Date(this.news.datetime*1000).toLocaleDateString('en-US',{month:'long', day:'2-digit', year:'numeric'});

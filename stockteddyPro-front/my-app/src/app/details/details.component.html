@@ -1,4 +1,4 @@
-<app-search></app-search>
+<app-search [searchValue]="symbol"></app-search>
 <mat-spinner
     *ngIf="
         (!quote 
@@ -27,9 +27,16 @@
         && validTicker)
     "
 >
+
+    <div *ngIf="showBoughtAlert" class="alert alert-success alert-dismissible text-center" role="alert" id="alert">
+        {{symbol}} bought successfully.
+        <button type="button" class="close" (click)="dismissBoughtAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
     <div class="row align-baseline mb-5">
         <!-- Ticker/Name/Exchange/Buy,Sell -->
-        <div class="col-sm m-0">
+        <div class="col-4 m-0">
             <p class="h2 m-0">{{profile2.ticker}}</p>
             <p class="h4 text-muted">{{profile2.name}}</p>
             <p class="">{{profile2.exchange}}</p>
@@ -38,22 +45,22 @@
             >Buy</button>
         </div>
         <!-- Logo -->
-        <div class="col-sm text-center">
-            <img src={{profile2.logo}} class="mx-auto w-50" alt="...">
+        <div class="col-4 text-center">
+            <img src={{profile2.logo}} class="mx-auto" style="width: 100px;" alt="...">
         </div>
         <!-- Close Price/Change/Current Time -->
-        <div class="col-sm text-right" [ngClass]="{'text-success':quote.d>0, 'text-danger':quote.d<0}">
-            <p class="h2 m-0">{{quote.c}}</p>
+        <div class="col-4 text-right" [ngClass]="{'text-success':quote.d>0, 'text-danger':quote.d<0}">
+            <p class="h2 m-0">{{quote.c | number:'1.2-2'}}</p>
             <p class="h4">
                 <span class="fa" [ngClass]="{'fa-caret-up':quote.d>0,'fa-caret-down':quote.d<0}"></span>
-                {{quote.d}} ({{quote.dp.toFixed(2)}}%)
+                {{quote.d | number:'1.2-2'}} ({{quote.dp  | number:'1.2-2'}}%)
             </p>
             <p class="text-dark">{{currentTime}}</p>
         </div>
     </div>
     <!-- Market Status Open/Close -->
     <div class="row text-center">
-        <div class="col-sm">
+        <div class="col">
             <p *ngIf="marketOpen" class="font-weight-bold text-success">Market is Open</p>
             <p *ngIf="!marketOpen" class="font-weight-bold text-danger">Market Closed on {{closedTime}}</p>
         </div>
@@ -66,10 +73,26 @@
                 <div class="row mt-3">
                     <!-- price & company -->
                     <div class="col-sm-12 col-md-6">
-                        <p><b>High Price</b>: {{quote.h}}</p>
-                        <p><b>Low Price</b>: {{quote.l}}</p>
-                        <p><b>Open Price</b>: {{quote.o}}</p>
-                        <p><b>Prev. Close</b>: {{quote.pc}}</p>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>High Price:</th>
+                                    <td class="text-right">{{quote.h | number:'1.2-2'}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Low Price:</th>
+                                    <td class="text-right">{{quote.l | number:'1.2-2'}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Open Price:</th>
+                                    <td class="text-right">{{quote.o | number:'1.2-2'}}</td>
+                                </tr>
+                                <tr>
+                                    <th>Prev. Price:</th>
+                                    <td class="text-right">{{quote.pc | number:'1.2-2'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                         <p class="h5 text-center"><u>About the company</u></p>
                         <p><b>IPO Start Date</b>: {{profile2.ipo}}</p>
                         <p><b>Industry</b>: {{profile2.finnhubIndustry}}</p>

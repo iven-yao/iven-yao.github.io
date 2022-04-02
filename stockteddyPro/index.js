@@ -29,12 +29,6 @@ app.get('/api/profile2',async (req, res) => {
 // candle
 app.get('/api/candle',async (req, res) => {
     console.log("/candle call");
-    var today = new Date();
-    const toTimestamp = Math.round(today.getTime()/1000);
-    today.setMonth(today.getMonth() -6);
-    today.setDate(today.getDate() -1);
-    var fromDate = new Date(today);
-    const fromTimestamp = Math.round(fromDate.getTime()/1000);
     let payload = {symbol:req.query.symbol, 
                     resolution:req.query.resolution, 
                     from:req.query.from, 

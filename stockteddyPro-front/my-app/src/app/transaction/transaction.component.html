@@ -7,13 +7,14 @@
     </button>
 </div>
 <div class="modal-body">
-    <p>Current Price: {{price}}</p>
-    <p>Money in Wallet: ${{money}}</p>
+    <p>Current Price: {{price| number:'1.2-2'}}</p>
+    <p>Money in Wallet: ${{money| number:'1.2-2'}}</p>
     <p>Quantity <input [(ngModel)]="transactionQuantity" type="number" min="0"></p>
 </div>
 <div class="modal-footer">
-    <p class="mr-auto">Total : {{transactionQuantity * price}}</p>
+    <p class="mr-auto">Total : {{transactionQuantity * price| number:'1.2-2'}}</p>
     <button type="button" 
+        class="btn btn-success"
         [disabled]="!transactionQuantity 
         || (isBuy && price*transactionQuantity > money) 
         || (!isBuy && transactionQuantity > boughtQuantity)"

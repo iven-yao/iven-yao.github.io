@@ -39,12 +39,12 @@ export class TransactionComponent implements OnInit {
     if(this.isBuy) {
       this.stockItem.quantity += this.transactionQuantity;
       this.stockItem.totalCost += this.transactionQuantity * this.price;
-      this.money -= this.transactionQuantity * this.price;
+      this.money = Number(this.money) - this.transactionQuantity * this.price;
     } else {
       let avergeCost = this.stockItem.totalCost / this.stockItem.quantity;
       this.stockItem.quantity -= this.transactionQuantity;
       this.stockItem.totalCost -= this.transactionQuantity * avergeCost;
-      this.money += this.transactionQuantity * this.price;
+      this.money = Number(this.money) + this.transactionQuantity * this.price;
     }
     let portfolioJson = JSON.parse(localStorage.getItem('Portfolio')!)??[];
     if(this.stockItem.quantity == 0) {
