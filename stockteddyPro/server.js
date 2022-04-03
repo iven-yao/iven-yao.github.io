@@ -8,9 +8,10 @@ const api_key="c85otiaad3i9e9m10gk0";
 const finnhub_api = "https://finnhub.io/api/v1";
 
 // app.get('/',(req, res) => res.send("Hello Express"));
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`App listening on port ${PORT}!`));
 
-app.use(express.static(path.join(__dirname,'../stockteddyPro-front/my-app/dist/my-app')));
+app.use(express.static(path.join(__dirname,'./static')));
 
 // profile2
 app.get('/api/profile2',async (req, res) => {
@@ -35,7 +36,6 @@ app.get('/api/candle',async (req, res) => {
                     to:req.query.to, 
                     token:api_key};
     const param = new url.URLSearchParams(payload);
-    console.log(param);
     try{
         let response = await axios.get(finnhub_api+"/stock/candle?"+param);
         let data = response.data;

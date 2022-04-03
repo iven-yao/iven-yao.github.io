@@ -2,5 +2,7 @@ export interface EarningsDAO {
     "actual": number,
     "estimate": number,
     "period": string,
-    "symbol": string
+    "symbol": string,
+    "surprise":number,
+    "surprisePercent":number
   }

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { BackendHelperService } from '../backend-helper.service';
 import { CandleDAO } from '../dao/candle-dao';
 import { EarningsDAO } from '../dao/earnings-dao';
@@ -14,7 +14,7 @@ import { Options } from 'highcharts/highstock';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsComponent } from '../news/news.component';
 import { TransactionComponent } from '../transaction/transaction.component';
-import { Subscription, timer } from 'rxjs';
+import { from, Subscription, timer } from 'rxjs';
 
 declare var require: any;
 require('highcharts/indicators/indicators')(Highcharts);
@@ -43,29 +43,46 @@ export class DetailsComponent implements OnInit {
   social: SocialDAO|undefined;
   earnings: EarningsDAO[]|undefined;
   subscription: Subscription|undefined;
+  isInWatchlist: boolean = false;
+  isSellable: boolean = false;
+  showSpinner: boolean = false;
 
   showBoughtAlert:boolean = false;
-  
+  alertMsg_trans:string = '';
+  showStarAlert:boolean = false;
+  alertMsg_star:string = '';
+
   Highcharts = Highcharts;
   hourlyChartOptions: Options = {} as Options;
   historicalChartOptions: Options = {} as Options;
+  trendsChartOptions: Options = {} as Options;
+  epsChartOptions: Options = {} as Options;
 
   constructor(
     private route: ActivatedRoute,
     private backendHelper: BackendHelperService,
     private newsModalService: NgbModal,
     private transactionService: NgbModal
-  ) { }
+  ) { 
+
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.clearData();
-      this.symbol = params.get('ticker')??' ';
-      this.checkExist(this.symbol);
+      if(params.get('ticker') != 'home') {
+        this.showSpinner = true;
+        this.clearData();
+        this.symbol = params.get('ticker')??' ';     
+        this.checkExist(this.symbol);
+        this.checkLocalStorage();
+      } else {
+        this.showSpinner = false;
+      }
     });
   }
 
-  ngOnDestroy():void {
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy');
     this.subscription?.unsubscribe();
   }
 
@@ -73,7 +90,12 @@ export class DetailsComponent implements OnInit {
     this.showBoughtAlert = false;
   }
 
+  dismissStarAlert() {
+    this.showStarAlert = false;
+  }
+
   openTransactionModal(ticker:string, name: string, price:number, isBuy:boolean) {
+    this.alertMsg_trans = ticker + (isBuy?' bought':' selled') + ' successfully.';
     const transactionModal = this.transactionService.open(TransactionComponent);
     transactionModal.componentInstance.ticker = ticker;
     transactionModal.componentInstance.name = name;
@@ -81,12 +103,55 @@ export class DetailsComponent implements OnInit {
     transactionModal.componentInstance.isBuy = isBuy;
     transactionModal.result.then(()=> {
       this.showBoughtAlert = true;
+      this.checkPortfolio();
     });
   }
 
   openNewsDetail(news: NewsDAO){
     const newsModal = this.newsModalService.open(NewsComponent);
     newsModal.componentInstance.news = news;
+  }
+
+  createEPSChart() {
+    let actual = this.earnings?.map((item)=>{ return [item.period, item.actual]});
+    let estimate = this.earnings?.map((item)=>{ return [item.period, item.estimate]});
+    let xAxisData = this.earnings?.map((item)=>{ return item.period+"<br>Surprise:"+item.surprise});
+
+    this.epsChartOptions = {
+      chart:{
+        type:'spline'
+      },
+      title: {
+        text:'Historical EPS Surprises'
+      },
+      xAxis: {
+        categories: xAxisData
+      },
+      yAxis:{
+        title: {
+          text:'Quarterly EPS'
+        },
+        opposite: false
+      },
+      navigator:{
+        enabled:false
+      },
+      scrollbar:{
+        enabled:false
+      },
+      series:[
+        {
+          name:'Actual',
+          type:'spline',
+          data:actual
+        },
+        {
+          name:'Estimate',
+          type:'spline',
+          data:estimate
+        }
+      ]
+    }
   }
 
   createHistoricalChart() {
@@ -223,14 +288,96 @@ export class DetailsComponent implements OnInit {
     };
   }
 
+  createTrendsChart() {
+    let strongBuyData = this.recommendation?.map( item => item.strongBuy);
+    let buyData = this.recommendation?.map( item => item.buy);
+    let holdData = this.recommendation?.map( item => item.hold);
+    let sellData = this.recommendation?.map( item => item.sell);
+    let strongSellData = this.recommendation?.map( item => item.strongSell);
+    let xAxisData = this.recommendation?.map( item => item.period.substring(0,7));
+    let colorData = ['#176f37','#1db954','#b98b1d','#f45b5b','#813131'];
+
+    console.log(xAxisData);
+
+    this.trendsChartOptions = {
+      chart:{
+        type:'column'
+      },
+      title: {
+        text: 'Recommendation Trends'
+      },
+      xAxis: {
+        categories: xAxisData
+      },
+      yAxis: {
+        min: 0,
+        title: {
+          text: '#Analysis',
+        },
+        opposite: false
+      },
+      colors: colorData,
+      legend: {
+        align: 'center',
+        verticalAlign: 'bottom',
+        floating: false,
+        backgroundColor:'white',
+        shadow: false
+      },
+      tooltip: {
+        headerFormat: '<b>{point.x}</b><br/>',
+        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true
+          }
+        }
+      },
+      navigator:{
+        enabled:false
+      },
+      scrollbar:{
+        enabled:false
+      },
+      series:[
+        {
+          name:'Strong Buy',
+          type:'column',
+          data: strongBuyData
+        },
+        {
+          name:'Buy',
+          type:'column',
+          data: buyData
+        },
+        {
+          name:'Hold',
+          type:'column',
+          data: holdData
+        },
+        {
+          name:'Sell',
+          type:'column',
+          data: sellData
+        },
+        {
+          name:'Strong Sell',
+          type:'column',
+          data: strongSellData
+        }
+      ]
+    }
+    
+  }
 
   createHourlyChart() {
 
     let data = this.hourlyCandle?.t.map((val, index) => {
       return [val*1000, this.hourlyCandle?.c[index]];
     });
-
-    console.log(data);
 
     this.hourlyChartOptions = {
       series:[
@@ -279,28 +426,36 @@ export class DetailsComponent implements OnInit {
   }
 
   fetchAll(ticker: string) {
-    this.subscription = timer(0, 15000).subscribe(() => {
-      this.backendHelper.getQuote(ticker).subscribe(
-        (values) => {
-          this.quote = values;
-          this.closedTime = this.formattedDateTime(new Date(values.t*1000));
-          this.currentTime = this.formattedDateTime(new Date());
-          
-          let diff = Math.abs(new Date().getTime()-values.t*1000);
-          if( diff <= 60000) {
-            this.marketOpen = true;
-          } else {
-            this.marketOpen = false;
-          }
-          this.backendHelper.getCandle(ticker,'5',values.t-21600,values.t).subscribe(
-            (values) => {
-              this.hourlyCandle = values;
-              this.createHourlyChart();
-            }
-          );
+    this.backendHelper.getQuote(ticker).subscribe(
+      (values) => {
+        this.quote = values;
+        this.closedTime = this.formattedDateTime(new Date(values.t*1000));
+        this.currentTime = this.formattedDateTime(new Date());
+        
+        let diff = Math.abs(new Date().getTime()-values.t*1000);
+        if( diff <= 60000*5) {
+          this.marketOpen = true;
+          this.subscription = timer(0, 15000).subscribe(() => {
+            this.backendHelper.getQuote(ticker).subscribe(
+              (values) => {
+                this.quote = values;
+                this.closedTime = this.formattedDateTime(new Date(values.t*1000));
+                this.currentTime = this.formattedDateTime(new Date());
+                console.log(this.quote);
+              }
+            );
+          });
+        } else {
+          this.marketOpen = false;
         }
-      );
-    });
+        this.backendHelper.getCandle(ticker,'5',values.t-21600,values.t).subscribe(
+          (values) => {
+            this.hourlyCandle = values;
+            this.createHourlyChart();
+          }
+        );
+      }
+    );
     
 
     this.backendHelper.getCandle(ticker,'D', 
@@ -321,6 +476,7 @@ export class DetailsComponent implements OnInit {
     this.backendHelper.getRecommendation(ticker).subscribe(
       (values) => {
         this.recommendation = values;
+        this.createTrendsChart();
       }
     );
 
@@ -339,6 +495,7 @@ export class DetailsComponent implements OnInit {
     this.backendHelper.getEarnings(ticker).subscribe(
       (values) => {
         this.earnings = values;
+        this.createEPSChart();
       }
     );
   }
@@ -352,6 +509,65 @@ export class DetailsComponent implements OnInit {
     this.recommendation = undefined;
     this.social = undefined;
     this.earnings = undefined;
+    this.isInWatchlist = false;
+    this.isSellable= false;
+
+    this.showBoughtAlert= false;
+    this.alertMsg_trans= '';
+
+    this.showStarAlert = false;
+    this.alertMsg_star = '';
+
+    this.subscription?.unsubscribe();
+
+  }
+
+  checkLocalStorage() {
+    this.checkWatchlist();
+    this.checkPortfolio();
+
+  }
+
+  checkWatchlist() {
+    if((JSON.parse(localStorage.getItem('Watchlist')!)??[]).filter((item:any)=> item.ticker == this.symbol).length>0) {
+      this.isInWatchlist = true;
+    } else {
+      this.isInWatchlist = false;
+    }
+  } 
+
+  checkPortfolio() {
+    if((JSON.parse(localStorage.getItem('Portfolio')!)??[]).filter((item:any)=> item.ticker == this.symbol).length>0) {
+      this.isSellable = true;
+    } else {
+      this.isSellable = false;
+    }
+  }
+
+
+  clickStar() {
+    this.isInWatchlist = !this.isInWatchlist;
+    let watchlistItems:any[];
+
+    watchlistItems = JSON.parse(localStorage.getItem('Watchlist')!)??[];
+    if(this.isInWatchlist) {
+      // add new item in watchlist
+      let watchlistNewItem = {
+        ticker: this.profile2?.ticker,
+        name: this.profile2?.name
+      }
+      watchlistItems.push(watchlistNewItem);
+      localStorage.setItem('Watchlist', JSON.stringify(watchlistItems));
+      this.alertMsg_star = this.profile2?.ticker +' added to Watchlist.'
+    } else {
+      // remove the item from watchlist
+      watchlistItems = watchlistItems.filter((item) => item.ticker != this.profile2?.ticker);
+      localStorage.setItem('Watchlist', JSON.stringify(watchlistItems));
+      this.alertMsg_star = this.profile2?.ticker + ' removed from Watchlist.'
+    }
+
+    this.showStarAlert = true;
+    
   }
 
 }
