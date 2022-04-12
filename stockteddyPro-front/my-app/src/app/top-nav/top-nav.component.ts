@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SearchValueService } from '../search-value.service';
 
 @Component({
   selector: 'app-top-nav',
@@ -7,7 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TopNavComponent implements OnInit {
 
-  constructor() { }
+  searchDest:string = 'home';
+
+  constructor(
+    private valueChangeService: SearchValueService
+  ) { 
+    this.valueChangeService.getUpdate().subscribe(
+      msg => {
+        this.searchDest = msg.text
+      }
+    );
+  }
 
   ngOnInit(): void {
   }

@@ -26,7 +26,7 @@ const appRoutes: Routes = [
   { path: '', redirectTo:'/search/home', pathMatch:'full'},
   { path: 'watchlist', component: WatchlistComponent},
   { path: 'portfolio', component: PortfolioComponent},
-  // { path: 'search/home', component: DetailsComponent, pathMatch:'full'},
+  { path: 'search/home', component: SearchComponent, pathMatch:'full'},
   { path: 'search/:ticker', component: DetailsComponent},
 ];
 

@@ -9,7 +9,7 @@
         || !recommendation 
         || !social 
         || !earnings) 
-        && validTicker && showSpinner
+        && validTicker
     "
     class="my-5 mx-auto"
 ></mat-spinner>
@@ -195,18 +195,18 @@
                         <tbody>
                             <tr>
                                 <th colspan="2" class="table-secondary">Total Mentions</th>
-                                <td class="table-light">{{social.reddit[0]?social.reddit[0].mention:0}}</td>
-                                <td class="table-light">{{social.twitter[0]?social.twitter[0].mention:0}}</td>
+                                <td class="table-light">{{redditTotalMention}}</td>
+                                <td class="table-light">{{twitterTotalMention}}</td>
                             </tr>
                             <tr>
                                 <th colspan="2" class="table-secondary">Positive Mentions</th>
-                                <td class="table-light">{{social.reddit[0]?social.reddit[0].positiveMention:0}}</td>
-                                <td class="table-light">{{social.twitter[0]?social.twitter[0].positiveMention:0}}</td>
+                                <td class="table-light">{{redditPosMention}}</td>
+                                <td class="table-light">{{twitterPosMention}}</td>
                             </tr>
                             <tr>
                                 <th colspan="2" class="table-secondary">Negative Mentions</th>
-                                <td class="table-light">{{social.reddit[0]?social.reddit[0].negativeMention:0}}</td>
-                                <td class="table-light">{{social.twitter[0]?social.twitter[0].negativeMention:0}}</td>
+                                <td class="table-light">{{redditNegMention}}</td>
+                                <td class="table-light">{{twitterNegMention}}</td>
                             </tr>
                         </tbody>
                     </table>

@@ -15,6 +15,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewsComponent } from '../news/news.component';
 import { TransactionComponent } from '../transaction/transaction.component';
 import { from, Subscription, timer } from 'rxjs';
+import { ThisReceiver } from '@angular/compiler';
+import { SearchValueService } from '../search-value.service';
 
 declare var require: any;
 require('highcharts/indicators/indicators')(Highcharts);
@@ -41,11 +43,16 @@ export class DetailsComponent implements OnInit {
   topNews:NewsDAO[]|undefined;
   recommendation: RecommendationDAO[]|undefined;
   social: SocialDAO|undefined;
+  redditTotalMention: number = 0;
+  redditPosMention: number = 0;
+  redditNegMention: number = 0;
+  twitterTotalMention: number =0;
+  twitterPosMention: number =0;
+  twitterNegMention: number =0;
   earnings: EarningsDAO[]|undefined;
   subscription: Subscription|undefined;
   isInWatchlist: boolean = false;
   isSellable: boolean = false;
-  showSpinner: boolean = false;
 
   showBoughtAlert:boolean = false;
   alertMsg_trans:string = '';
@@ -62,29 +69,29 @@ export class DetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private backendHelper: BackendHelperService,
     private newsModalService: NgbModal,
-    private transactionService: NgbModal
+    private transactionService: NgbModal,
+    private valueChangeService: SearchValueService
   ) { 
 
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      if(params.get('ticker') != 'home') {
-        this.showSpinner = true;
         this.clearData();
-        this.symbol = params.get('ticker')??' ';     
+        this.symbol = params.get('ticker')??' '; 
         this.checkExist(this.symbol);
         this.checkLocalStorage();
-      } else {
-        this.showSpinner = false;
-      }
     });
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
     this.subscription?.unsubscribe();
   }
+
+  sendMessage(ticker:string): void {
+    // send message to subscribers via observable subject
+    this.valueChangeService.sendUpdate(ticker);
+}
 
   dismissBoughtAlert() {
     this.showBoughtAlert = false;
@@ -104,6 +111,8 @@ export class DetailsComponent implements OnInit {
     transactionModal.result.then(()=> {
       this.showBoughtAlert = true;
       this.checkPortfolio();
+    }).catch(err => {
+      console.log(err);
     });
   }
 
@@ -113,8 +122,8 @@ export class DetailsComponent implements OnInit {
   }
 
   createEPSChart() {
-    let actual = this.earnings?.map((item)=>{ return [item.period, item.actual]});
-    let estimate = this.earnings?.map((item)=>{ return [item.period, item.estimate]});
+    let actual = this.earnings?.map((item)=>{ return [item.period+"<br>Surprise:"+item.surprise, item.actual]});
+    let estimate = this.earnings?.map((item)=>{ return [item.period+"<br>Surprise:"+item.surprise, item.estimate]});
     let xAxisData = this.earnings?.map((item)=>{ return item.period+"<br>Surprise:"+item.surprise});
 
     this.epsChartOptions = {
@@ -138,6 +147,9 @@ export class DetailsComponent implements OnInit {
       },
       scrollbar:{
         enabled:false
+      },
+      tooltip:{
+        shared: true
       },
       series:[
         {
@@ -418,6 +430,7 @@ export class DetailsComponent implements OnInit {
         if(values.ticker) {
           this.validTicker = true;
           this.fetchAll(ticker);
+          this.sendMessage(ticker);
         } else {
           this.validTicker = false;
         }
@@ -483,6 +496,17 @@ export class DetailsComponent implements OnInit {
     this.backendHelper.getSocial(ticker).subscribe(
       (values) => {
         this.social = values;
+        this.social.reddit.forEach((red)=>{
+          this.redditTotalMention += red.mention;
+          this.redditPosMention += red.positiveMention;
+          this.redditNegMention += red.negativeMention;
+        });
+
+        this.social.twitter.forEach((twt)=>{
+          this.twitterTotalMention += twt.mention;
+          this.twitterPosMention += twt.positiveMention;
+          this.twitterNegMention += twt.negativeMention;
+        });
       }
     );
 
@@ -517,6 +541,13 @@ export class DetailsComponent implements OnInit {
 
     this.showStarAlert = false;
     this.alertMsg_star = '';
+
+    this.redditTotalMention = 0;
+    this.redditPosMention = 0;
+    this.redditNegMention = 0;
+    this.twitterTotalMention =0;
+    this.twitterPosMention = 0;
+    this.twitterNegMention = 0;
 
     this.subscription?.unsubscribe();
 
