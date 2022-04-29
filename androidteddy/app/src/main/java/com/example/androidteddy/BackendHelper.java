@@ -1,5 +1,7 @@
 package com.example.androidteddy;
 
+import android.util.Log;
+
 import org.json.JSONException;
 
 import java.io.BufferedReader;
@@ -24,6 +26,7 @@ public class BackendHelper {
     private static final String PEERS = "/api/peers?";
     private static final String EARNINGS = "/api/earning?";
     private static URL url;
+    private static final String TAG="TEDDY::";
 
     public static String getProfile2(String symbol) {
         Map<String, String> payload = new HashMap<>();
@@ -82,26 +85,84 @@ public class BackendHelper {
         return connect(EARNINGS, payload);
     }
 
+    public static String getProfile2Url(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(PROFILE2, payload);
+    }
+
+    public static String getCandleUrl(String symbol, String res, String from, String to) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol", symbol);
+        payload.put("resolution", res);
+        payload.put("from", from);
+        payload.put("to", to);
+        return buildUrl(CANDLE, payload);
+    }
+
+    public static String getQuoteUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(QUOTE, payload);
+    }
+
+    public static String getSearchUrl(String q) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("q",q);
+        return buildUrl(SEARCH, payload);
+    }
+
+    public static String getNewsUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(NEWS, payload);
+    }
+
+    public static String getTrendUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(TREND, payload);
+    }
+
+    public static String getSocialUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(SOCIAL, payload);
+    }
+
+    public static String getPeersUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(PEERS, payload);
+    }
+
+    public static String getEarningsUrl(String symbol) {
+        Map<String, String> payload = new HashMap<>();
+        payload.put("symbol",symbol);
+        return buildUrl(EARNINGS, payload);
+    }
+
+    private static String buildUrl(String api, Map<String, String> params) {
+        StringBuilder builder = new StringBuilder(HOSTNAME);
+        builder.append(api);
+        for(String key: params.keySet()) {
+            builder.append(key);
+            builder.append("=");
+            builder.append(params.get(key));
+        }
+        return builder.toString();
+    }
+
     private static String connect(String api, Map<String, String> payload) {
         BufferedReader buf;
         String line;
         StringBuilder response = new StringBuilder();
-        String responseJSON = null;
         try {
-            StringBuilder builder = new StringBuilder(HOSTNAME);
-            builder.append(api);
-            for(String key: payload.keySet()) {
-                builder.append(key);
-                builder.append("=");
-                builder.append(payload.get(key));
-            }
-            url = new URL(builder.toString());
+            url = new URL(buildUrl(api, payload));
             conn = (HttpURLConnection) url.openConnection();
-
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(5000);
-
+            conn.setConnectTimeout(10000);
+            conn.setReadTimeout(10000);
             int status = conn.getResponseCode();
 
             if(status >= 300) {
@@ -115,11 +176,11 @@ public class BackendHelper {
 
             buf.close();
 
-//            responseJSON = response.toString();
-
         } catch (MalformedURLException e) {
+            Log.d(TAG, "mal:" + e.getMessage());
             e.printStackTrace();
         } catch (IOException e) {
+            Log.d(TAG, "io: "+e.getMessage());
             e.printStackTrace();
         } finally {
             conn.disconnect();

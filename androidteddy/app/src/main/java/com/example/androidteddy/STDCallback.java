@@ -1,8 +1,11 @@
 package com.example.androidteddy;
 
 import android.content.Context;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -15,7 +18,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
+abstract public class STDCallback extends ItemTouchHelper.Callback {
 
     Context mContext;
     private final Paint mClearPaint;
@@ -26,10 +29,10 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
     private final int intrinsicHeight;
 
 
-    SwipeToDeleteCallback(Context context) {
+    STDCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
-        backgroundColor = Color.parseColor("#b80f0a");
+        backgroundColor = Color.RED;
         mClearPaint = new Paint();
         mClearPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         deleteDrawable = ContextCompat.getDrawable(mContext, R.drawable.ic_delete);
@@ -77,6 +80,8 @@ abstract public class SwipeToDeleteCallback extends ItemTouchHelper.Callback {
 
 
         deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+        deleteDrawable.setColorFilter(new BlendModeColorFilter(Color.WHITE, BlendMode.SRC_ATOP));
+
         deleteDrawable.draw(c);
 
         super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);

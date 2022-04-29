@@ -7,5 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lightgrey">#FFAAAAAA</color>
+    <color name="section_back">#5FAAAAAA</color>
+    <color name="lightgrey">#5F000000</color>
+    <color name="divider">#1F000000</color>
 </resources>
