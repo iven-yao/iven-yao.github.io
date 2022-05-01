@@ -59,7 +59,7 @@ public class SearchResultActivity extends AppCompatActivity {
     ImageView starButton;
     TextView toolbarText;
     // basic
-    double c_value;
+    float c_value;
     TextView result_symbol, result_companyName, result_c, result_d, result_dp;
     ImageView result_logo, result_trendingIcon;
     // charts
@@ -128,7 +128,7 @@ public class SearchResultActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            c_value = response.getDouble("c");
+                            c_value = (float)response.getDouble("c");
                             StringBuilder cstring = new StringBuilder();
                             cstring.append("$").append(df.format(response.getDouble("c")));
                             StringBuilder dstring = new StringBuilder();
@@ -143,7 +143,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             hstring.append("$").append(df.format(response.getDouble("h")));
                             StringBuilder pcstring = new StringBuilder();
                             pcstring.append("$").append(df.format(response.getDouble("pc")));
-                            float marketVal = (float)response.getDouble("c")*portPref.getInt(querySymbol,0);
+                            float marketVal = c_value*portPref.getInt(querySymbol,0);
                             float diff = marketVal-portPref.getFloat(querySymbol+"::TOTAL", 0.0f);
                             StringBuilder marketString = new StringBuilder();
                             marketString.append("$").append(df.format(marketVal));
@@ -384,7 +384,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_LONG).show();
                         } else {
                             int toBuy = Integer.parseInt(input);
-                            double cost = c_value* toBuy;
+                            float cost = c_value* toBuy;
                             if(toBuy <= 0) {
                                 Toast.makeText(SearchResultActivity.this, "Cannot buy non-positive shares", Toast.LENGTH_LONG).show();
                             } else if(cost > networthPref.getFloat("CASH",25000.0f)) {
@@ -405,6 +405,11 @@ public class SearchResultActivity extends AppCompatActivity {
                                     editor.putString("ORDER", newOrder);
                                 }
                                 editor.apply();
+                                // update cash
+                                SharedPreferences.Editor editor2 = networthPref.edit();
+                                float origCash = networthPref.getFloat("CASH",25000.0f);
+                                editor2.putFloat("CASH",origCash-toBuy*c_value);
+                                editor2.apply();
 
                                 //show success dialog
                                 Dialog dialog_success = new Dialog(SearchResultActivity.this);
@@ -432,6 +437,68 @@ public class SearchResultActivity extends AppCompatActivity {
                     }
                 });
                 Button button_sell = dialog_trade.findViewById(R.id.button_sell);
+                button_sell.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String input = share_input.getText().toString();
+                        if(!isParsable(input)) {
+                            Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_LONG).show();
+                        } else {
+                            int toSell = Integer.parseInt(input);
+                            float cost = c_value* toSell;
+                            if(toSell <= 0) {
+                                Toast.makeText(SearchResultActivity.this, "Cannot sell non-positive shares", Toast.LENGTH_LONG).show();
+                            } else if(toSell > portPref.getInt(querySymbol, 0)) {
+                                Toast.makeText(SearchResultActivity.this,"Not enough shares to sell",Toast.LENGTH_LONG).show();
+                            } else {
+                                //success
+                                int origShares = portPref.getInt(querySymbol,0);
+                                float origTotal = portPref.getFloat(querySymbol+"::TOTAL",0.0f);
+                                SharedPreferences.Editor editor = portPref.edit();
+                                editor.putInt(querySymbol, origShares - toSell);
+                                editor.putFloat(querySymbol+"::TOTAL", origTotal - toSell*c_value);
+                                //remove from order
+                                if(origShares == toSell) {
+                                    String order = portPref.getString("ORDER","[]");
+                                    List<String> orderList = new Gson().fromJson(order, ArrayList.class);
+                                    orderList.remove(querySymbol);
+                                    String newOrder = new Gson().toJson(orderList);
+                                    editor.putString("ORDER", newOrder);
+                                    editor.remove(querySymbol);
+                                    editor.remove(querySymbol+"::TOTAL");
+                                }
+                                editor.apply();
+                                // update cash
+                                SharedPreferences.Editor editor2 = networthPref.edit();
+                                float origCash = networthPref.getFloat("CASH",25000.0f);
+                                editor2.putFloat("CASH",origCash+toSell*c_value);
+                                editor2.apply();
+
+                                //show success dialog
+                                Dialog dialog_success = new Dialog(SearchResultActivity.this);
+                                dialog_success.setContentView(R.layout.dialog_success);
+                                dialog_success.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView success_msg = dialog_success.findViewById(R.id.success_msg);
+                                StringBuilder successString = new StringBuilder();
+                                successString.append("You have successfully sold ")
+                                        .append(toSell)
+                                        .append(" shares of "+ querySymbol);
+                                success_msg.setText(successString.toString());
+                                Button button_done = dialog_success.findViewById(R.id.button_done);
+                                button_done.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog_success.dismiss();
+                                        setPortfolioContent();
+                                    }
+                                });
+                                dialog_success.show();
+                                dialog_trade.dismiss();
+                            }
+                        }
+                    }
+                });
 
                 dialog_trade.show();
             }

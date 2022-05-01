@@ -69,6 +69,7 @@ public class HomeActivity extends AppCompatActivity {
     // networth
     GridView networth;
     SimpleAdapter networthAdapter;
+    List<Map<String, Object>> networthItems;
     // date, footer
     TextView date, footer;
     // portfolio, favorites
@@ -267,6 +268,9 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
 
+                float cash_value = networthPref.getFloat("CASH",25000.0f);
+                float networth_value = cash_value;
+
                 for(String symbol: port_shared) {
                     res = BackendHelper.getQuote(symbol);
                     try {
@@ -283,10 +287,18 @@ public class HomeActivity extends AppCompatActivity {
                         item.put("d",marketVal-totalcost);
                         item.put("dp",(marketVal-totalcost)*100/totalcost);
                         portItems.add(item);
+
+                        networth_value+=marketVal;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
+
+                networthItems.clear();
+                Map item = new HashMap();
+                item.put("networth_value", "$"+df.format(networth_value));
+                item.put("cashbalance_value", "$"+df.format(cash_value));
+                networthItems.add(item);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -294,6 +306,7 @@ public class HomeActivity extends AppCompatActivity {
                         // notify
                         portfolio_adapter.notifyDataSetChanged();
                         favorites_adapter.notifyDataSetChanged();
+                        networthAdapter.notifyDataSetChanged();
                         spinner.setVisibility(View.GONE);
                         scrollView.setVisibility(View.VISIBLE);
                     }
@@ -334,14 +347,14 @@ public class HomeActivity extends AppCompatActivity {
     private void setNetworth() {
         networth = findViewById(R.id.net_worth);
         networthPref = getSharedPreferences("NETWORTH", MODE_PRIVATE);
-        List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
+        networthItems = new ArrayList<Map<String, Object>>();
         Map item = new HashMap();
         item.put("networth_value", "$"+df.format(25000));
         item.put("cashbalance_value", "$"+df.format(networthPref.getFloat("CASH",25000.0f)));
-        items.add(item);
+        networthItems.add(item);
         String[] s = new String[]{"networth_value","cashbalance_value"};
         int[] i = new int[]{R.id.net_worth_value, R.id.cash_balance_value};
-        networthAdapter = new SimpleAdapter(this, items, R.layout.layout_networth, s, i);
+        networthAdapter = new SimpleAdapter(this, networthItems, R.layout.layout_networth, s, i);
         networth.setAdapter(networthAdapter);
     }
 
