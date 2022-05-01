@@ -49,11 +49,11 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void setDP(Float val) {
-        if(val > 0) {
+        if(val > 0.005) {
             d.setTextColor(view.getContext().getColor(R.color.green));
             dp.setTextColor(view.getContext().getColor(R.color.green));
             trending.setImageResource(R.drawable.ic_baseline_trending_up_24);
-        } else if( val < 0) {
+        } else if( val < -0.005) {
             d.setTextColor(Color.RED);
             dp.setTextColor(Color.RED);
             trending.setImageResource(R.drawable.ic_baseline_trending_down_24);

@@ -161,10 +161,10 @@ public class SearchResultActivity extends AppCompatActivity {
 
                             change.setText(diffString.toString());
                             market_value.setText(marketString.toString());
-                            if(diff < 0) {
+                            if(diff < -0.005) {
                                 change.setTextColor(Color.RED);
                                 market_value.setTextColor(Color.RED);
-                            } else if(diff > 0) {
+                            } else if(diff > 0.005) {
                                 change.setTextColor(getColor(R.color.green));
                                 market_value.setTextColor(getColor(R.color.green));
                             }
@@ -409,6 +409,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 //show success dialog
                                 Dialog dialog_success = new Dialog(SearchResultActivity.this);
                                 dialog_success.setContentView(R.layout.dialog_success);
+                                dialog_success.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                                 TextView success_msg = dialog_success.findViewById(R.id.success_msg);
                                 StringBuilder successString = new StringBuilder();
@@ -443,9 +444,13 @@ public class SearchResultActivity extends AppCompatActivity {
         int share_owned = portPref.getInt(querySymbol, 0);
         float total = portPref.getFloat(querySymbol+"::TOTAL",0.0f);
         float avg = share_owned == 0 ? 0: total/share_owned;
+        float marketVal = (float)c_value*share_owned;
+        float diff = marketVal - total;
         share.setText(""+share_owned);
         avg_cost.setText("$"+df.format(avg));
         total_cost.setText("$"+df.format(total));
+        change.setText("$"+df.format(diff));
+        market_value.setText("$"+df.format(marketVal));
     }
 
     private boolean isParsable(String input) {
