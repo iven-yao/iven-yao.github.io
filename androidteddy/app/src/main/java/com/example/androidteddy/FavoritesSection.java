@@ -47,9 +47,9 @@ public class FavoritesSection extends Section {
         FavoritesItemViewHolder itemView = (FavoritesItemViewHolder) holder;
         itemView.setSymbol((String) itemList.get(position).get("symbol"));
         itemView.setCompanyName((String) itemList.get(position).get("companyName"));
-        itemView.setC((Double) itemList.get(position).get("c"));
-        itemView.setD((Double) itemList.get(position).get("d"));
-        itemView.setDP((Double) itemList.get(position).get("dp"));
+        itemView.setC((Float) itemList.get(position).get("c"));
+        itemView.setD((Float) itemList.get(position).get("d"));
+        itemView.setDP((Float) itemList.get(position).get("dp"));
     }
 
 

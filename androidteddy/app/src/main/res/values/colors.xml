@@ -10,4 +10,5 @@
     <color name="section_back">#5FAAAAAA</color>
     <color name="lightgrey">#5F000000</color>
     <color name="divider">#1F000000</color>
+    <color name="green">#FF28A745</color>
 </resources>

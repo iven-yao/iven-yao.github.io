@@ -17,9 +17,11 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView dp;
     private final ImageView trending;
     private final DecimalFormat df = new DecimalFormat("0.00");
+    private final View view;
 
     public PortfolioItemViewHolder(View itemView) {
         super(itemView);
+        view = itemView;
         symbol = itemView.findViewById(R.id.portfolio_symbol);
         share = itemView.findViewById(R.id.portfolio_share);
         c = itemView.findViewById(R.id.portfolio_c);
@@ -37,25 +39,25 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
         share.setText(val);
     }
 
-    public void setC(Double val) {
+    public void setC(Float val) {
         c.setTextColor(Color.BLACK);
         c.setText("$"+df.format(val));
     }
 
-    public void setD(Double val) {
+    public void setD(Float val) {
         d.setText("$"+ df.format(val)+" ");
     }
 
-    public void setDP(Double val) {
+    public void setDP(Float val) {
         if(val > 0) {
-            d.setTextColor(Color.GREEN);
-            dp.setTextColor(Color.GREEN);
+            d.setTextColor(view.getContext().getColor(R.color.green));
+            dp.setTextColor(view.getContext().getColor(R.color.green));
             trending.setImageResource(R.drawable.ic_baseline_trending_up_24);
         } else if( val < 0) {
             d.setTextColor(Color.RED);
             dp.setTextColor(Color.RED);
             trending.setImageResource(R.drawable.ic_baseline_trending_down_24);
         }
-        dp.setText("("+df.format(val)+")");
+        dp.setText("( "+df.format(val)+"% )");
     }
 }

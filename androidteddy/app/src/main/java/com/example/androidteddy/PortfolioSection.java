@@ -47,9 +47,9 @@ public class PortfolioSection extends Section {
         PortfolioItemViewHolder itemView = (PortfolioItemViewHolder)holder;
         itemView.setSymbol((String)itemList.get(position).get("symbol"));
         itemView.setShare((String) itemList.get(position).get("share"));
-        itemView.setC((Double) itemList.get(position).get("c"));
-        itemView.setD((Double) itemList.get(position).get("d"));
-        itemView.setDP((Double) itemList.get(position).get("dp"));
+        itemView.setC((Float) itemList.get(position).get("c"));
+        itemView.setD((Float) itemList.get(position).get("d"));
+        itemView.setDP((Float) itemList.get(position).get("dp"));
     }
 
 }

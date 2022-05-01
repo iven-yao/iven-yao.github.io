@@ -18,9 +18,11 @@ public class FavoritesItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView dp;
     private final ImageView ic;
     private final DecimalFormat df = new DecimalFormat("0.00");
+    private final View view;
 
     public FavoritesItemViewHolder(View itemView) {
         super(itemView);
+        view = itemView;
         symbol = itemView.findViewById(R.id.fav_symbol);
         companyName = itemView.findViewById(R.id.fav_companyName);
         c = itemView.findViewById(R.id.fav_c);
@@ -34,26 +36,26 @@ public class FavoritesItemViewHolder extends RecyclerView.ViewHolder {
         symbol.setText(val);
     }
 
-    public void setC(Double val) {
+    public void setC(Float val) {
         c.setTextColor(Color.BLACK);
         c.setText("$"+df.format(val));
     }
 
-    public void setD(Double val) {
+    public void setD(Float val) {
         d.setText("$"+ df.format(val)+" ");
     }
 
-    public void setDP(Double val) {
+    public void setDP(Float val) {
         if(val > 0) {
-            d.setTextColor(Color.GREEN);
-            dp.setTextColor(Color.GREEN);
+            d.setTextColor(view.getContext().getColor(R.color.green));
+            dp.setTextColor(view.getContext().getColor(R.color.green));
             ic.setImageResource(R.drawable.ic_baseline_trending_up_24);
         } else if( val < 0) {
             d.setTextColor(Color.RED);
             dp.setTextColor(Color.RED);
             ic.setImageResource(R.drawable.ic_baseline_trending_down_24);
         }
-        dp.setText("(" + df.format(val) + ")");
+        dp.setText("( " + df.format(val) + "% )");
     }
 
     public void setCompanyName(String val) {

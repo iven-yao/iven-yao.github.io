@@ -1,6 +1,7 @@
 package com.example.androidteddy;
 
 import android.util.Log;
+import android.webkit.JavascriptInterface;
 
 import org.json.JSONException;
 
@@ -28,12 +29,13 @@ public class BackendHelper {
     private static URL url;
     private static final String TAG="TEDDY::";
 
+    @JavascriptInterface
     public static String getProfile2(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(PROFILE2, payload);
     }
-
+    @JavascriptInterface
     public static String getCandle(String symbol, String res, String from, String to) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol", symbol);
@@ -42,43 +44,43 @@ public class BackendHelper {
         payload.put("to", to);
         return connect(CANDLE, payload);
     }
-
+    @JavascriptInterface
     public static String getQuote(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(QUOTE, payload);
     }
-
+    @JavascriptInterface
     public static String getSearch(String q) {
         Map<String, String> payload = new HashMap<>();
         payload.put("q",q);
         return connect(SEARCH, payload);
     }
-
+    @JavascriptInterface
     public static String getNews(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(NEWS, payload);
     }
-
+    @JavascriptInterface
     public static String getTrend(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(TREND, payload);
     }
-
+    @JavascriptInterface
     public static String getSocial(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(SOCIAL, payload);
     }
-
+    @JavascriptInterface
     public static String getPeers(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
         return connect(PEERS, payload);
     }
-
+    @JavascriptInterface
     public static String getEarnings(String symbol) {
         Map<String, String> payload = new HashMap<>();
         payload.put("symbol",symbol);
@@ -145,7 +147,13 @@ public class BackendHelper {
     private static String buildUrl(String api, Map<String, String> params) {
         StringBuilder builder = new StringBuilder(HOSTNAME);
         builder.append(api);
+        boolean first = true;
         for(String key: params.keySet()) {
+            if(!first) {
+                builder.append("&");
+            } else {
+                first = false;
+            }
             builder.append(key);
             builder.append("=");
             builder.append(params.get(key));
@@ -161,8 +169,8 @@ public class BackendHelper {
             url = new URL(buildUrl(api, payload));
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            conn.setConnectTimeout(10000);
-            conn.setReadTimeout(10000);
+//            conn.setConnectTimeout(10000);
+//            conn.setReadTimeout(10000);
             int status = conn.getResponseCode();
 
             if(status >= 300) {

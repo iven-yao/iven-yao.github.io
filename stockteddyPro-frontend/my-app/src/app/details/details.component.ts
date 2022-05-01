@@ -91,7 +91,7 @@ export class DetailsComponent implements OnInit {
   sendMessage(ticker:string): void {
     // send message to subscribers via observable subject
     this.valueChangeService.sendUpdate(ticker);
-}
+  }
 
   dismissBoughtAlert() {
     this.showBoughtAlert = false;

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -65,6 +68,7 @@ public class HomeActivity extends AppCompatActivity {
 
     // networth
     GridView networth;
+    SimpleAdapter networthAdapter;
     // date, footer
     TextView date, footer;
     // portfolio, favorites
@@ -76,8 +80,12 @@ public class HomeActivity extends AppCompatActivity {
     ArrayAdapter<String> acAdapter;
     List<String> autoCompleteItems;
     SearchView.SearchAutoComplete ac;
-    // volley
+    // volley && timer
     RequestQueue queue;
+    Timer timer;
+    Handler handler;
+    // shared preference
+    SharedPreferences favPref, portPref, networthPref;
     // spinner
     ProgressBar spinner;
     ScrollView scrollView;
@@ -101,6 +109,10 @@ public class HomeActivity extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
         scrollView = findViewById(R.id.scrollview);
         scrollView.setVisibility(View.GONE);
+        // pref
+        favPref = getSharedPreferences("FAVORITES", MODE_PRIVATE);
+        portPref = getSharedPreferences("PORTFOLIO", MODE_PRIVATE);
+
         // portfolio
         setPortfolio();
         // favorites
@@ -115,6 +127,8 @@ public class HomeActivity extends AppCompatActivity {
         autoCompleteItems = new ArrayList<>();
         // volley
         queue = Volley.newRequestQueue(this);
+        timer = new Timer();
+        handler = new Handler(getMainLooper());
     }
 
     @Override
@@ -150,7 +164,10 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 // direct to searchResultActivity
                 Intent intent = new Intent(HomeActivity.this, SearchResultActivity.class);
+                intent.putExtra("query",query.toUpperCase());
                 startActivity(intent);
+                timer.cancel();
+                timer.purge();
                 return true;
             }
 
@@ -162,6 +179,14 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: ");
+        timer = new Timer();
+        fetchDataAndNotify();
     }
 
     private void createQList(String q) {
@@ -191,36 +216,48 @@ public class HomeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        }, null);
+        }, error -> {
+            error.printStackTrace();
+        });
         queue.add(acRequest);
+
     }
 
-    private void fetchDataAndNotify() {
-        List<String> fav_shared = Arrays.asList("AAPL","GOOGL","SPOT");
-        List<String> port_shared = Arrays.asList("AAPL","GOOGL","SPOT", "AMZN");
-        Handler handler = new Handler(Looper.getMainLooper());
-        Timer timer = new Timer();
+    private List<String> getFavorites() {
+        String order = favPref.getString("ORDER","[]");
+        List<String> orderList = new Gson().fromJson(order, ArrayList.class);
+        return orderList;
+    }
+
+    private List<String> getPortfolio() {
+        String order = portPref.getString("ORDER","[]");
+        List<String> orderList = new Gson().fromJson(order, ArrayList.class);
+        return orderList;
+    }
+
+
+    private TimerTask fetchDataTask() {
         TimerTask asyncTask = new TimerTask() {
-            String res, resProfile2;
-            double c, d, dp;
+            String res;
+            float c, d, dp;
             @Override
             public void run() {
-                Log.d(TAG, "run: fetching...");
                 //background work here..
+                List<String> fav_shared = getFavorites();
+                List<String> port_shared = getPortfolio();
+                Log.d(TAG, "run: "+fav_shared);
                 favItems.clear();
                 portItems.clear();
                 for(String symbol: fav_shared) {
                     res = BackendHelper.getQuote(symbol);
-                    resProfile2 = BackendHelper.getProfile2(symbol);
                     try {
                         JSONObject resJSON = new JSONObject(res);
-                        JSONObject jsonProfile2 = new JSONObject(resProfile2);
-                        c = resJSON.getDouble("c");
-                        d = resJSON.getDouble("d");
-                        dp = resJSON.getDouble("dp");
+                        c = (float)resJSON.getDouble("c");
+                        d = (float)resJSON.getDouble("d");
+                        dp = (float)resJSON.getDouble("dp");
                         Map<String, Object> item = new HashMap<>();
                         item.put("symbol", symbol);
-                        item.put("companyName", jsonProfile2.getString("name"));
+                        item.put("companyName", favPref.getString(symbol, ""));
                         item.put("c",c);
                         item.put("d",d);
                         item.put("dp",dp);
@@ -234,15 +271,17 @@ public class HomeActivity extends AppCompatActivity {
                     res = BackendHelper.getQuote(symbol);
                     try {
                         JSONObject resJSON = new JSONObject(res);
-                        c = resJSON.getDouble("c");
-                        d = resJSON.getDouble("d");
-                        dp = resJSON.getDouble("dp");
+                        c = (float)resJSON.getDouble("c");
+                        Log.d(TAG, "run: "+portPref.getAll());
+                        int share = portPref.getInt(symbol,0);
+                        float totalcost = portPref.getFloat(symbol+"::TOTAL", 0.0f);
+                        float marketVal = share * (float)c;
                         Map<String, Object> item = new HashMap<>();
                         item.put("symbol", symbol);
-                        item.put("share", "3 shares");
-                        item.put("c",c);
-                        item.put("d",d);
-                        item.put("dp",dp);
+                        item.put("share",  share + " shares");
+                        item.put("c",marketVal);
+                        item.put("d",marketVal-totalcost);
+                        item.put("dp",(marketVal-totalcost)*100/totalcost);
                         portItems.add(item);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -261,7 +300,12 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(asyncTask, 0, 15000);
+
+        return asyncTask;
+    }
+
+    private void fetchDataAndNotify() {
+        timer.schedule(fetchDataTask(), 0, 15000);
     }
 
     private void setFooter() {
@@ -289,15 +333,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setNetworth() {
         networth = findViewById(R.id.net_worth);
+        networthPref = getSharedPreferences("NETWORTH", MODE_PRIVATE);
         List<Map<String, Object>> items = new ArrayList<Map<String, Object>>();
         Map item = new HashMap();
         item.put("networth_value", "$"+df.format(25000));
-        item.put("cashbalance_value", "$"+df.format(25000));
+        item.put("cashbalance_value", "$"+df.format(networthPref.getFloat("CASH",25000.0f)));
         items.add(item);
         String[] s = new String[]{"networth_value","cashbalance_value"};
         int[] i = new int[]{R.id.net_worth_value, R.id.cash_balance_value};
-        SimpleAdapter sa = new SimpleAdapter(this, items, R.layout.layout_networth, s, i);
-        networth.setAdapter(sa);
+        networthAdapter = new SimpleAdapter(this, items, R.layout.layout_networth, s, i);
+        networth.setAdapter(networthAdapter);
     }
 
     private void setPortfolio() {
@@ -308,7 +353,7 @@ public class HomeActivity extends AppCompatActivity {
         portfolio.setLayoutManager(new LinearLayoutManager(portfolio.getContext()));
         portfolio.setAdapter(portfolio_adapter);
         portfolio.addItemDecoration(new DividerItemDecoration(portfolio.getContext(), 1));
-        enableDragToReorder(portfolio_adapter, portfolio, portItems);
+        enableDragToReorder(portfolio_adapter, portfolio, portItems, portPref);
     }
 
     private void setFavorites() {
@@ -320,14 +365,38 @@ public class HomeActivity extends AppCompatActivity {
         favorites.setAdapter(favorites_adapter);
         favorites.addItemDecoration(new DividerItemDecoration(favorites.getContext(), 1));
         enableSwipeToDeleteAndUndo(favorites_adapter, favorites, favItems);
-        enableDragToReorder(favorites_adapter, favorites, favItems);
+        enableDragToReorder(favorites_adapter, favorites, favItems, favPref);
     }
 
     private void enableDragToReorder(SectionedRecyclerViewAdapter sectionAdapter,
-                                     RecyclerView view, List<Map<String, Object>> items) {
-        DTRCallback dtr = new DTRCallback(1|2,0, items, sectionAdapter);
+                                     RecyclerView view, List<Map<String, Object>> items, SharedPreferences pref) {
+        DTRCallback dtr = new DTRCallback(1|2,0, items, sectionAdapter){
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                int from = viewHolder.getAdapterPosition();
+                int to = target.getAdapterPosition();
+                items.add(to, items.remove(from));
+                sectionAdapter.notifyItemMoved(from, to);
+                reorderInPref(pref, from, to);
+                return true;
+            }
+        };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(dtr);
         itemTouchHelper.attachToRecyclerView(view);
+    }
+
+    private void reorderInPref(SharedPreferences pref, int from, int to) {
+        SharedPreferences.Editor editor = pref.edit();
+        String order = pref.getString("ORDER", "[]");
+        List<String> orderList = new Gson().fromJson(order, ArrayList.class);
+        String tmp = orderList.get(from);
+        orderList.remove(from);
+        orderList.add(to, tmp);
+        String newOrder = new Gson().toJson(orderList);
+        editor.putString("ORDER", newOrder);
+        editor.apply();
     }
 
 
@@ -337,14 +406,30 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
                 final int position = viewHolder.getAdapterPosition();
-                items.remove(position);
+                Map<String, Object> item = items.remove(position);
                 sectionAdapter.notifyItemRemoved(position);
+
+                deleteFromFavorites((String)item.get("symbol"));
 
             }
         };
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(stdCallback);
         itemTouchhelper.attachToRecyclerView(view);
+    }
+
+    private void deleteFromFavorites(String del) {
+        SharedPreferences.Editor editor = favPref.edit();
+        //maintain order
+        String order = favPref.getString("ORDER", "[]");
+        List<String> orderList = new Gson().fromJson(order, ArrayList.class);
+        orderList.remove(del);
+        String newOrder = new Gson().toJson(orderList);
+        editor.putString("ORDER", newOrder);
+
+        //delete detail
+        editor.remove(del);
+        editor.apply();
     }
 
 }

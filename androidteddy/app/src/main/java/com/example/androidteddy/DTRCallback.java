@@ -10,7 +10,7 @@ import java.util.Map;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
-public class DTRCallback extends ItemTouchHelper.SimpleCallback {
+abstract public class DTRCallback extends ItemTouchHelper.SimpleCallback {
     List<Map<String, Object>> items;
     SectionedRecyclerViewAdapter sectionAdapter;
 
@@ -18,17 +18,6 @@ public class DTRCallback extends ItemTouchHelper.SimpleCallback {
         super(dragDirs, swipeDirs);
         this.items = items;
         this.sectionAdapter = sectionAdapter;
-    }
-
-    @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView,
-                          @NonNull RecyclerView.ViewHolder viewHolder,
-                          @NonNull RecyclerView.ViewHolder target) {
-        int from = viewHolder.getAdapterPosition();
-        int to = target.getAdapterPosition();
-        items.add(to, items.remove(from));
-        sectionAdapter.notifyItemMoved(from, to);
-        return true;
     }
 
     @Override

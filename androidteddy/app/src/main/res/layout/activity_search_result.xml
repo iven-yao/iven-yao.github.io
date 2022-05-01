@@ -25,14 +25,24 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <include layout="@layout/result_top_section" />
-            <WebView
+            
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chart_historical"/>
-            <WebView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chart_hourly"/>
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_layout"
+            android:background="@color/white"
+            app:tabIndicatorColor="@color/purple_700"
+            />
+
+            <include layout="@layout/portfolio_section"/>
+            <include layout="@layout/stats_section"/>
+            <include layout="@layout/about_section"/>
+            <include layout="@layout/insights_section"/>
         </LinearLayout>
     </ScrollView>
 

@@ -1,0 +1,57 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script>
+
+        function generate(symbol) {
+            var quote = JSON.parse(BackendHelper.getQuote(symbol));
+            var d = quote.d;
+            var from = quote.t-21600;
+            var to = quote.t;
+            var res = 5;
+
+            var data = JSON.parse(BackendHelper.getCandle(symbol, res.toString(), from.toString(), to.toString()));
+            var priceArray = data.t.map(function(ele, index) {
+                return [ele*1000, data.c[index]];
+            });
+
+            Highcharts.stockChart("chart-container", {
+                series:[
+                    {
+                        data: priceArray,
+                        color: d<0 ? '#FF0000': '#28A745',
+                        showInNavigator: false,
+                        name: symbol,
+                        type: 'line',
+                        tooltip: {
+                            valueDecimals: 2
+                        }
+                    }
+                ],
+                title: {
+                    text: symbol + " Hourly Price Variation"
+                },
+                rangeSelector: {
+                    enabled: false
+                },
+                navigator: {
+                    enabled: false
+                },
+                scrollbar: {
+                    enabled: false
+                },
+                time: {
+                    timezoneOffset: new Date().getTimezoneOffset()
+                }
+            });
+        }
+
+    </script>
+</head>
+    <body>
+        <div id="chart-container"></div>
+    </body>
+</html>
