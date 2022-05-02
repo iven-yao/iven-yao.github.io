@@ -25,7 +25,7 @@ public class BackendHelper {
     private static final String TREND = "/api/recommendation?";
     private static final String SOCIAL = "/api/social-sentiment?";
     private static final String PEERS = "/api/peers?";
-    private static final String EARNINGS = "/api/earning?";
+    private static final String EARNINGS = "/api/earnings?";
     private static URL url;
     private static final String TAG="TEDDY::";
 

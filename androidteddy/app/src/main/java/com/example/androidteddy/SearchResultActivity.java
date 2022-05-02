@@ -2,6 +2,8 @@ package com.example.androidteddy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Dialog;
@@ -18,6 +20,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,13 +32,16 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,9 +83,13 @@ public class SearchResultActivity extends AppCompatActivity {
     TextView stats_o,stats_h, stats_l, stats_p;
 
     // about
-    TextView ipo, industry, webpage, peers;
-
-    // about
+    TextView ipo, industry, webpage;
+    RecyclerView peers;
+    PeersAdapter peersAdapter;
+    List<String> peers_list;
+    // insights
+    TextView table_company, reddit_total, twitter_total, reddit_pos, twitter_pos, reddit_neg, twitter_neg;
+    WebView chart_trending, chart_eps;
 
     // volley
     RequestQueue queue;
@@ -119,10 +129,22 @@ public class SearchResultActivity extends AppCompatActivity {
         setPortfolio();
         setStats();
         setAbout();
+        setInsights();
 
     }
 
     private void getDataAndShowView() {
+        StringRequest peersRequest = new StringRequest(Request.Method.GET, BackendHelper.getPeersUrl(querySymbol), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                List<String> res = new Gson().fromJson(response, ArrayList.class);
+                Log.d(TAG, "onResponse: "+res);
+                peers_list.clear();
+                peers_list.addAll(res);
+                peersAdapter.notifyDataSetChanged();
+            }
+        }, error -> error.printStackTrace());
+
         JsonObjectRequest quoteRequest = new JsonObjectRequest(Request.Method.GET, BackendHelper.getQuoteUrl(querySymbol), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -221,6 +243,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            queue.add(peersRequest);
                             queue.add(quoteRequest);
                         }
                     }
@@ -541,5 +564,42 @@ public class SearchResultActivity extends AppCompatActivity {
         industry = findViewById(R.id.industry_content);
         webpage = findViewById(R.id.webpage_content);
         peers = findViewById(R.id.peer_content);
+        peers_list = new ArrayList<>();
+        peersAdapter = new PeersAdapter(peers_list);
+        peers.setLayoutManager(new LinearLayoutManager(peers.getContext(), LinearLayoutManager.HORIZONTAL, false));
+        peers.setAdapter(peersAdapter);
+    }
+
+    private void setInsights(){
+        table_company = findViewById(R.id.table_company);
+        reddit_total = findViewById(R.id.reddit_total);
+        reddit_pos = findViewById(R.id.reddit_pos);
+        reddit_neg = findViewById(R.id.reddit_neg);
+        twitter_total = findViewById(R.id.twitter_total);
+        twitter_pos = findViewById(R.id.twitter_pos);
+        twitter_neg = findViewById(R.id.twitter_neg);
+        chart_trending = findViewById(R.id.chart_trend);
+        chart_eps = findViewById(R.id.chart_eps);
+
+        chart_trending.getSettings().setJavaScriptEnabled(true);
+        chart_trending.loadUrl("file:///android_asset/chart_trending.html");
+        chart_trending.addJavascriptInterface(new BackendHelper(), "BackendHelper");
+        chart_trending.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                chart_trending.evaluateJavascript("javascript:generate('"+querySymbol+"')",null);
+            }
+        });
+
+        chart_eps.getSettings().setJavaScriptEnabled(true);
+        chart_eps.loadUrl("file:///android_asset/chart_eps.html");
+        chart_eps.addJavascriptInterface(new BackendHelper(), "BackendHelper");
+        chart_eps.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                chart_eps.evaluateJavascript("javascript:generate('"+querySymbol+"')",null);
+            }
+        });
+
     }
 }

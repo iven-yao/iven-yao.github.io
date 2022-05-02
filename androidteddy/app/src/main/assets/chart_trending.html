@@ -1,0 +1,100 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script>
+
+        function generate(symbol) {
+            var trend = JSON.parse(BackendHelper.getTrend(symbol));
+            var strongBuyData = trend?.map( item => item.strongBuy);
+            var buyData = trend?.map( item => item.buy);
+            var holdData = trend?.map( item => item.hold);
+            var sellData = trend?.map( item => item.sell);
+            var strongSellData = trend?.map( item => item.strongSell);
+            var xAxisData = trend?.map( item => item.period);
+            var colorData = ['#176f37','#1db954','#b98b1d','#f45b5b','#813131'];
+
+            Highcharts.chart("chart-container", {
+                chart:{
+                    type:'column'
+                },
+                title: {
+                    text: 'Recommendation Trends'
+                },
+                xAxis: {
+                    categories: xAxisData
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '#Analysis',
+                    },
+                    opposite: false
+                },
+                colors: colorData,
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    floating: false,
+                    backgroundColor:'white',
+                    shadow: false,
+                    borderWidth: 1
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                navigator:{
+                    enabled:false
+                },
+                scrollbar:{
+                    enabled:false
+                },
+                series:[
+                    {
+                    name:'Strong Buy',
+                    type:'column',
+                    data: strongBuyData
+                    },
+                    {
+                        name:'Buy',
+                        type:'column',
+                        data: buyData
+                    },
+                    {
+                        name:'Hold',
+                        type:'column',
+                        data: holdData
+                    },
+                    {
+                        name:'Sell',
+                        type:'column',
+                        data: sellData
+                    },
+                    {
+                        name:'Strong Sell',
+                        type:'column',
+                        data: strongSellData
+                    }
+                ]
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div id="chart-container"></div>
+</body>
+</html>

@@ -11,4 +11,6 @@
     <color name="lightgrey">#5F000000</color>
     <color name="divider">#1F000000</color>
     <color name="green">#FF28A745</color>
+    <color name="table_header">#5F666666</color>
+    <color name="table_content">#5FBBBBBB</color>
 </resources>

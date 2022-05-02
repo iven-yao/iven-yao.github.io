@@ -1,0 +1,62 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.highcharts.com/stock/highstock.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+    <script>
+
+        function generate(symbol) {
+            var earnings = JSON.parse(BackendHelper.getEarnings(symbol));
+            let actual = earnings?.map((item)=>{ return [item.period+"<br>Surprise:"+item.surprise, item.actual]});
+            let estimate = earnings?.map((item)=>{ return [item.period+"<br>Surprise:"+item.surprise, item.estimate]});
+            let xAxisData = earnings?.map((item)=>{ return item.period+"<br>Surprise:"+item.surprise});
+
+            Highcharts.chart("chart-container", {
+                chart:{
+                    type:'spline'
+                },
+                title: {
+                    text:'Historical EPS Surprises'
+                },
+                xAxis: {
+                    categories: xAxisData
+                },
+                yAxis:{
+                    title: {
+                        text:'Quarterly EPS'
+                    },
+                    opposite: false
+                },
+                navigator:{
+                    enabled:false
+                },
+                scrollbar:{
+                    enabled:false
+                },
+                tooltip:{
+                    shared: true
+                },
+                series:[
+                    {
+                        name:'Actual',
+                        type:'spline',
+                        data:actual
+                    },
+                    {
+                        name:'Estimate',
+                        type:'spline',
+                        data:estimate
+                    }
+                ]
+            });
+        }
+
+    </script>
+</head>
+<body>
+<div id="chart-container"></div>
+</body>
+</html>

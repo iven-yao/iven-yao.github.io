@@ -1,5 +1,7 @@
 package com.example.androidteddy;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 
@@ -44,12 +46,23 @@ public class PortfolioSection extends Section {
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
-        PortfolioItemViewHolder itemView = (PortfolioItemViewHolder)holder;
-        itemView.setSymbol((String)itemList.get(position).get("symbol"));
-        itemView.setShare((String) itemList.get(position).get("share"));
-        itemView.setC((Float) itemList.get(position).get("c"));
-        itemView.setD((Float) itemList.get(position).get("d"));
-        itemView.setDP((Float) itemList.get(position).get("dp"));
+        PortfolioItemViewHolder pHolder = (PortfolioItemViewHolder)holder;
+        pHolder.setSymbol((String)itemList.get(position).get("symbol"));
+        pHolder.setShare((String) itemList.get(position).get("share"));
+        pHolder.setC((Float) itemList.get(position).get("c"));
+        pHolder.setD((Float) itemList.get(position).get("d"));
+        pHolder.setDP((Float) itemList.get(position).get("dp"));
+
+        String query = (String)itemList.get(position).get("symbol");
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = holder.itemView.getContext();
+                Intent intent = new Intent(context, SearchResultActivity.class);
+                intent.putExtra("query",query.toUpperCase());
+                context.startActivity(intent);
+            }
+        });
     }
 
 }

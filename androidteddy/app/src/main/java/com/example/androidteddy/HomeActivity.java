@@ -167,8 +167,6 @@ public class HomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(HomeActivity.this, SearchResultActivity.class);
                 intent.putExtra("query",query.toUpperCase());
                 startActivity(intent);
-                timer.cancel();
-                timer.purge();
                 return true;
             }
 
@@ -185,9 +183,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d(TAG, "onRestart: ");
         timer = new Timer();
         fetchDataAndNotify();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: ");
+        timer.cancel();
+        timer.purge();
     }
 
     private void createQList(String q) {

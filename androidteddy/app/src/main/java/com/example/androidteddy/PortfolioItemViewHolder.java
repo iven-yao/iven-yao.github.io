@@ -1,5 +1,6 @@
 package com.example.androidteddy;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
         d = itemView.findViewById(R.id.portfolio_d);
         dp = itemView.findViewById(R.id.portfolio_dp);
         trending = itemView.findViewById(R.id.portfolio_trending);
+
     }
 
     public void setSymbol(String val) {
