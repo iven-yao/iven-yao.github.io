@@ -1,7 +1,6 @@
 package com.example.androidteddy;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -15,19 +14,13 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
@@ -40,6 +33,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.androidteddy.callback.DTRCallback;
+import com.example.androidteddy.callback.STDCallback;
+import com.example.androidteddy.section.FavoritesSection;
+import com.example.androidteddy.section.PortfolioSection;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -49,17 +46,13 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
 
@@ -395,8 +388,8 @@ public class HomeActivity extends AppCompatActivity {
                                   @NonNull RecyclerView.ViewHolder target) {
                 int from = viewHolder.getAdapterPosition();
                 int to = target.getAdapterPosition();
-                items.add(to, items.remove(from));
-                sectionAdapter.notifyItemMoved(from, to);
+                getItems().add(to, getItems().remove(from));
+                getSectionAdapter().notifyItemMoved(from, to);
                 reorderInPref(pref, from, to);
                 return true;
             }

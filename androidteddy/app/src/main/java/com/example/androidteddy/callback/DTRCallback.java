@@ -1,4 +1,4 @@
-package com.example.androidteddy;
+package com.example.androidteddy.callback;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +23,14 @@ abstract public class DTRCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
 
+    }
+
+    public List<Map<String, Object>> getItems() {
+        return items;
+    }
+
+    public SectionedRecyclerViewAdapter getSectionAdapter() {
+        return sectionAdapter;
     }
 
     @Override

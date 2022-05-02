@@ -1,11 +1,14 @@
-package com.example.androidteddy;
+package com.example.androidteddy.section;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidteddy.viewholder.PortfolioItemViewHolder;
+import com.example.androidteddy.R;
+import com.example.androidteddy.SearchResultActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +25,14 @@ public class PortfolioSection extends Section {
 
     public PortfolioSection() {
         super(SectionParameters.builder()
-                .itemResourceId(R.layout.portfolio_item)
+                .itemResourceId(R.layout.item_portfolio)
                 .build());
         itemList = new ArrayList<>();
     }
 
     public PortfolioSection(List<Map<String, Object>> list) {
         super(SectionParameters.builder()
-                .itemResourceId(R.layout.portfolio_item)
+                .itemResourceId(R.layout.item_portfolio)
                 .build());
         itemList = list;
     }

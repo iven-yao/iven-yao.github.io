@@ -1,4 +1,4 @@
-package com.example.androidteddy;
+package com.example.androidteddy.viewholder;
 
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -7,6 +7,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidteddy.R;
 
 import java.text.DecimalFormat;
 

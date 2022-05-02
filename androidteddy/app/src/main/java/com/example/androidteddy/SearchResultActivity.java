@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -32,10 +33,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.androidteddy.adapter.PeersAdapter;
+import com.example.androidteddy.adapter.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.google.gson.Gson;
@@ -48,6 +50,8 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class SearchResultActivity extends AppCompatActivity {
@@ -93,7 +97,9 @@ public class SearchResultActivity extends AppCompatActivity {
 
     // volley
     RequestQueue queue;
-
+    Timer timer;
+    Handler handler;
+    JsonObjectRequest quoteRequest;
     // df
     DecimalFormat df = new DecimalFormat("0.00");
     boolean isFav;
@@ -104,6 +110,31 @@ public class SearchResultActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_result);
         init();
         getDataAndShowView();
+        startTimer();
+    }
+
+    private void startTimer() {
+        timer = new Timer();
+        TimerTask asyncTask = new TimerTask() {
+            @Override
+            public void run() {
+                queue.add(quoteRequest);
+            }
+        };
+        timer.schedule(asyncTask, 0, 15000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        timer.cancel();
+        timer.purge();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startTimer();
     }
 
     @Override
@@ -134,6 +165,45 @@ public class SearchResultActivity extends AppCompatActivity {
     }
 
     private void getDataAndShowView() {
+        JsonObjectRequest socialRequest = new JsonObjectRequest(Request.Method.GET, BackendHelper.getSocialUrl(querySymbol), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            JSONArray reddit = response.getJSONArray("reddit");
+                            int rTotal = 0;
+                            int rPos = 0;
+                            int rNeg = 0;
+                            for(int i =0; i < reddit.length(); i++){
+                                JSONObject r = reddit.getJSONObject(i);
+                                rTotal += r.getInt("mention");
+                                rPos += r.getInt("positiveMention");
+                                rNeg += r.getInt("negativeMention");
+                            }
+
+                            JSONArray twitter = response.getJSONArray("twitter");
+                            int tTotal = 0;
+                            int tPos = 0;
+                            int tNeg = 0;
+                            for(int i =0; i < twitter.length(); i++){
+                                JSONObject t = twitter.getJSONObject(i);
+                                tTotal += t.getInt("mention");
+                                tPos += t.getInt("positiveMention");
+                                tNeg += t.getInt("negativeMention");
+                            }
+
+                            reddit_total.setText(""+rTotal);
+                            reddit_pos.setText(""+rPos);
+                            reddit_neg.setText(""+rNeg);
+                            twitter_total.setText(""+tTotal);
+                            twitter_pos.setText(""+tPos);
+                            twitter_neg.setText(""+tNeg);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, error -> error.printStackTrace());
+
         StringRequest peersRequest = new StringRequest(Request.Method.GET, BackendHelper.getPeersUrl(querySymbol), new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -145,7 +215,7 @@ public class SearchResultActivity extends AppCompatActivity {
             }
         }, error -> error.printStackTrace());
 
-        JsonObjectRequest quoteRequest = new JsonObjectRequest(Request.Method.GET, BackendHelper.getQuoteUrl(querySymbol), null,
+        quoteRequest = new JsonObjectRequest(Request.Method.GET, BackendHelper.getQuoteUrl(querySymbol), null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -156,7 +226,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             StringBuilder dstring = new StringBuilder();
                             dstring.append("$").append(df.format(response.getDouble("d")));
                             StringBuilder dpstring = new StringBuilder();
-                            dpstring.append("(").append(df.format(response.getDouble("dp"))).append(")");
+                            dpstring.append("(").append(df.format(response.getDouble("dp"))).append("%)");
                             StringBuilder ostring = new StringBuilder();
                             ostring.append("$").append(df.format(response.getDouble("o")));
                             StringBuilder lstring = new StringBuilder();
@@ -219,6 +289,7 @@ public class SearchResultActivity extends AppCompatActivity {
                         } else {
                             result_symbol.setText(querySymbol);
                             try {
+                                table_company.setText(response.getString("name"));
                                 result_companyName.setText(response.getString("name"));
                                 Picasso.get().load(response.getString("logo")).into(result_logo);
                                 ipo.setText(response.getString("ipo"));
@@ -243,6 +314,7 @@ public class SearchResultActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+                            queue.add(socialRequest);
                             queue.add(peersRequest);
                             queue.add(quoteRequest);
                         }
@@ -454,6 +526,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                     }
                                 });
                                 dialog_success.show();
+                                share_input.getText().clear();
                                 dialog_trade.dismiss();
                             }
                         }
@@ -517,6 +590,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                     }
                                 });
                                 dialog_success.show();
+                                share_input.getText().clear();
                                 dialog_trade.dismiss();
                             }
                         }

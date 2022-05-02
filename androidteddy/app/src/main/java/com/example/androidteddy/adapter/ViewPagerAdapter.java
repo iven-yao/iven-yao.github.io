@@ -1,10 +1,13 @@
-package com.example.androidteddy;
+package com.example.androidteddy.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.androidteddy.fragment.HistoricalChartFragment;
+import com.example.androidteddy.fragment.HourlyChartFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
 

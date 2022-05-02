@@ -1,4 +1,4 @@
-package com.example.androidteddy;
+package com.example.androidteddy.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.androidteddy.R;
+import com.example.androidteddy.SearchResultActivity;
 
 import java.util.List;
 

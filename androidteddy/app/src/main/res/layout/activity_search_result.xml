@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <include layout="@layout/result_top_section" />
+            <include layout="@layout/section_top" />
             
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/view_pager"
@@ -40,10 +40,10 @@
             app:tabIndicatorColor="@color/purple_700"
             />
 
-            <include layout="@layout/portfolio_section"/>
-            <include layout="@layout/stats_section"/>
-            <include layout="@layout/about_section"/>
-            <include layout="@layout/insights_section"/>
+            <include layout="@layout/section_portfolio"/>
+            <include layout="@layout/section_stats"/>
+            <include layout="@layout/section_about"/>
+            <include layout="@layout/section_insights"/>
         </LinearLayout>
     </ScrollView>
 

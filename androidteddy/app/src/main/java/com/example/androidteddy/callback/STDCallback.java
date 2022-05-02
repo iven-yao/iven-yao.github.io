@@ -1,4 +1,4 @@
-package com.example.androidteddy;
+package com.example.androidteddy.callback;
 
 import android.content.Context;
 import android.graphics.BlendMode;
@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidteddy.R;
+
 abstract public class STDCallback extends ItemTouchHelper.Callback {
 
     Context mContext;
@@ -29,7 +31,7 @@ abstract public class STDCallback extends ItemTouchHelper.Callback {
     private final int intrinsicHeight;
 
 
-    STDCallback(Context context) {
+    public STDCallback(Context context) {
         mContext = context;
         mBackground = new ColorDrawable();
         backgroundColor = Color.RED;

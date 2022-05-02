@@ -1,10 +1,12 @@
-package com.example.androidteddy;
+package com.example.androidteddy.section;
 
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Arrays;
+import com.example.androidteddy.viewholder.FavoritesItemViewHolder;
+import com.example.androidteddy.R;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +19,13 @@ public class FavoritesSection extends Section {
 
     public FavoritesSection() {
         super(SectionParameters.builder()
-                .itemResourceId(R.layout.favorites_item)
+                .itemResourceId(R.layout.item_favorites)
                 .build());
     }
 
     public FavoritesSection(List<Map<String, Object>> list) {
         super(SectionParameters.builder()
-                .itemResourceId(R.layout.favorites_item)
+                .itemResourceId(R.layout.item_favorites)
                 .build());
         itemList = list;
     }
