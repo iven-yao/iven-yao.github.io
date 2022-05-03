@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 //        s2.edit().clear().commit();
 //        SharedPreferences s3 = getSharedPreferences("NETWORTH", MODE_PRIVATE);
 //        s3.edit().clear().commit();
-//
+
         new Handler(Looper.getMainLooper()).postDelayed(()->{
             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);

@@ -544,6 +544,9 @@ public class SearchResultActivity extends AppCompatActivity {
                                     editor.putString("ORDER", newOrder);
                                 }
                                 editor.apply();
+
+                                setPortfolioContent();
+
                                 // update cash
                                 SharedPreferences.Editor editor2 = networthPref.edit();
                                 float origCash = networthPref.getFloat("CASH",25000.0f);
@@ -567,7 +570,6 @@ public class SearchResultActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View view) {
                                         dialog_success.dismiss();
-                                        setPortfolioContent();
                                     }
                                 });
                                 dialog_success.show();
@@ -615,6 +617,8 @@ public class SearchResultActivity extends AppCompatActivity {
                                 editor2.putFloat("CASH",origCash+toSell*c_value);
                                 editor2.apply();
 
+                                setPortfolioContent();
+
                                 //show success dialog
                                 Dialog dialog_success = new Dialog(SearchResultActivity.this);
                                 dialog_success.setContentView(R.layout.dialog_success);
@@ -632,7 +636,6 @@ public class SearchResultActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View view) {
                                         dialog_success.dismiss();
-                                        setPortfolioContent();
                                     }
                                 });
                                 dialog_success.show();
@@ -661,6 +664,10 @@ public class SearchResultActivity extends AppCompatActivity {
         total_cost.setText("$"+df.format(total));
         change.setText("$"+df.format(diff));
         market_value.setText("$"+df.format(marketVal));
+        if(diff == 0) {
+            change.setTextColor(Color.BLACK);
+            market_value.setTextColor(Color.BLACK);
+        }
     }
 
     private boolean isParsable(String input) {
