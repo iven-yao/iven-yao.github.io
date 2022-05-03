@@ -1,9 +1,12 @@
 package com.example.androidteddy.section;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidteddy.SearchResultActivity;
 import com.example.androidteddy.viewholder.FavoritesItemViewHolder;
 import com.example.androidteddy.R;
 
@@ -46,12 +49,23 @@ public class FavoritesSection extends Section {
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder holder, int position) {
-        FavoritesItemViewHolder itemView = (FavoritesItemViewHolder) holder;
-        itemView.setSymbol((String) itemList.get(position).get("symbol"));
-        itemView.setCompanyName((String) itemList.get(position).get("companyName"));
-        itemView.setC((Float) itemList.get(position).get("c"));
-        itemView.setD((Float) itemList.get(position).get("d"));
-        itemView.setDP((Float) itemList.get(position).get("dp"));
+        FavoritesItemViewHolder fHolder = (FavoritesItemViewHolder) holder;
+        fHolder.setSymbol((String) itemList.get(position).get("symbol"));
+        fHolder.setCompanyName((String) itemList.get(position).get("companyName"));
+        fHolder.setC((Float) itemList.get(position).get("c"));
+        fHolder.setD((Float) itemList.get(position).get("d"));
+        fHolder.setDP((Float) itemList.get(position).get("dp"));
+
+        String query = (String)itemList.get(position).get("symbol");
+        fHolder.getChev().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Context context = fHolder.itemView.getContext();
+                Intent intent = new Intent(context, SearchResultActivity.class);
+                intent.putExtra("query",query.toUpperCase());
+                context.startActivity(intent);
+            }
+        });
     }
 
 

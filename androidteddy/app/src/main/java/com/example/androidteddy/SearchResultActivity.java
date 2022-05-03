@@ -20,6 +20,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -33,9 +34,11 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.androidteddy.adapter.NewsAdapter;
 import com.example.androidteddy.adapter.PeersAdapter;
 import com.example.androidteddy.adapter.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
@@ -49,7 +52,9 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -94,7 +99,10 @@ public class SearchResultActivity extends AppCompatActivity {
     // insights
     TextView table_company, reddit_total, twitter_total, reddit_pos, twitter_pos, reddit_neg, twitter_neg;
     WebView chart_trending, chart_eps;
-
+    // news
+    RecyclerView news;
+    NewsAdapter newsAdapter;
+    List<Map<String, String>> news_list;
     // volley
     RequestQueue queue;
     Timer timer;
@@ -161,10 +169,40 @@ public class SearchResultActivity extends AppCompatActivity {
         setStats();
         setAbout();
         setInsights();
-
+        setNews();
     }
 
     private void getDataAndShowView() {
+        JsonArrayRequest newsRequest = new JsonArrayRequest(Request.Method.GET, BackendHelper.getNewsUrl(querySymbol), null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        int count = 0;
+                        for(int i = 0; i < response.length(); i++) {
+                            if(count >= 20) break;
+                            try{
+                                JSONObject newsObject = response.getJSONObject(i);
+                                if(newsObject.getString("image").isEmpty()) continue;
+
+                                Map<String, String> newsItem = new HashMap<>();
+                                newsItem.put("image_url", newsObject.getString("image"));
+                                newsItem.put("source", newsObject.getString("source"));
+                                newsItem.put("title", newsObject.getString("headline"));
+                                newsItem.put("summary", newsObject.getString("summary"));
+                                newsItem.put("url", newsObject.getString("url"));
+                                newsItem.put("datetime", String.valueOf(newsObject.getLong("datetime")));
+
+                                news_list.add(newsItem);
+                                count++;
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        newsAdapter.notifyDataSetChanged();
+                    }
+                }, error -> error.printStackTrace());
+
         JsonObjectRequest socialRequest = new JsonObjectRequest(Request.Method.GET, BackendHelper.getSocialUrl(querySymbol), null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -259,6 +297,9 @@ public class SearchResultActivity extends AppCompatActivity {
                             } else if(diff > 0.005) {
                                 change.setTextColor(getColor(R.color.green));
                                 market_value.setTextColor(getColor(R.color.green));
+                            } else {
+                                change.setTextColor(getColor(R.color.black));
+                                market_value.setTextColor(getColor(R.color.black));
                             }
 
                             if(response.getDouble("d") > 0) {
@@ -314,6 +355,8 @@ public class SearchResultActivity extends AppCompatActivity {
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
+                            queue.add(newsRequest);
                             queue.add(socialRequest);
                             queue.add(peersRequest);
                             queue.add(quoteRequest);
@@ -433,6 +476,7 @@ public class SearchResultActivity extends AppCompatActivity {
         dialog_trade = new Dialog(SearchResultActivity.this);
         dialog_trade.setContentView(R.layout.dialog_trade);
         dialog_trade.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog_trade.getWindow().setLayout((int)(getResources().getDisplayMetrics().widthPixels*0.95), ViewGroup.LayoutParams.WRAP_CONTENT);
 
         button_trade.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -476,14 +520,14 @@ public class SearchResultActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         String input = share_input.getText().toString();
                         if(!isParsable(input)) {
-                            Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_SHORT).show();
                         } else {
                             int toBuy = Integer.parseInt(input);
                             float cost = c_value* toBuy;
                             if(toBuy <= 0) {
-                                Toast.makeText(SearchResultActivity.this, "Cannot buy non-positive shares", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SearchResultActivity.this, "Cannot buy non-positive shares", Toast.LENGTH_SHORT).show();
                             } else if(cost > networthPref.getFloat("CASH",25000.0f)) {
-                                Toast.makeText(SearchResultActivity.this,"Not enough money to buy",Toast.LENGTH_LONG).show();
+                                Toast.makeText(SearchResultActivity.this,"Not enough money to buy",Toast.LENGTH_SHORT).show();
                             } else {
                                 //success
                                 int origShares = portPref.getInt(querySymbol,0);
@@ -510,6 +554,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 Dialog dialog_success = new Dialog(SearchResultActivity.this);
                                 dialog_success.setContentView(R.layout.dialog_success);
                                 dialog_success.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                dialog_success.getWindow().setLayout((int)(view.getResources().getDisplayMetrics().widthPixels*0.95),ViewGroup.LayoutParams.WRAP_CONTENT);
 
                                 TextView success_msg = dialog_success.findViewById(R.id.success_msg);
                                 StringBuilder successString = new StringBuilder();
@@ -538,14 +583,14 @@ public class SearchResultActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         String input = share_input.getText().toString();
                         if(!isParsable(input)) {
-                            Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SearchResultActivity.this,"Please enter a valid amount", Toast.LENGTH_SHORT).show();
                         } else {
                             int toSell = Integer.parseInt(input);
                             float cost = c_value* toSell;
                             if(toSell <= 0) {
-                                Toast.makeText(SearchResultActivity.this, "Cannot sell non-positive shares", Toast.LENGTH_LONG).show();
+                                Toast.makeText(SearchResultActivity.this, "Cannot sell non-positive shares", Toast.LENGTH_SHORT).show();
                             } else if(toSell > portPref.getInt(querySymbol, 0)) {
-                                Toast.makeText(SearchResultActivity.this,"Not enough shares to sell",Toast.LENGTH_LONG).show();
+                                Toast.makeText(SearchResultActivity.this,"Not enough shares to sell",Toast.LENGTH_SHORT).show();
                             } else {
                                 //success
                                 int origShares = portPref.getInt(querySymbol,0);
@@ -574,6 +619,7 @@ public class SearchResultActivity extends AppCompatActivity {
                                 Dialog dialog_success = new Dialog(SearchResultActivity.this);
                                 dialog_success.setContentView(R.layout.dialog_success);
                                 dialog_success.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                dialog_success.getWindow().setLayout((int)(view.getResources().getDisplayMetrics().widthPixels*0.95),ViewGroup.LayoutParams.WRAP_CONTENT);
 
                                 TextView success_msg = dialog_success.findViewById(R.id.success_msg);
                                 StringBuilder successString = new StringBuilder();
@@ -674,6 +720,13 @@ public class SearchResultActivity extends AppCompatActivity {
                 chart_eps.evaluateJavascript("javascript:generate('"+querySymbol+"')",null);
             }
         });
+    }
 
+    public void setNews(){
+        news = findViewById(R.id.news_list);
+        news_list = new ArrayList<>();
+        newsAdapter = new NewsAdapter(news_list);
+        news.setLayoutManager(new LinearLayoutManager(news.getContext(), LinearLayoutManager.VERTICAL, false));
+        news.setAdapter(newsAdapter);
     }
 }

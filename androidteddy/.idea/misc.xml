@@ -12,22 +12,29 @@
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/activity_search_result.xml" value="0.264" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/cardview_networth.xml" value="0.1" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/cardview_row.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/dialog_news.xml" value="0.2" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/dialog_success.xml" value="0.1" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/dialog_trade.xml" value="0.1" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/favorites_item.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/fragment_historical_chart.xml" value="0.1" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/fragment_hourly_chart.xml" value="0.10989583333333333" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/insights_section.xml" value="0.4" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/item_favorites.xml" value="0.21875" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/layout_favorites.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/layout_networth.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/layout_peer.xml" value="0.1" />
-        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/news_layout_first.xml" value="0.264" />
-        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/news_layout_general.xml" value="0.1" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/news_layout_first.xml" value="0.4" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/news_layout_general.xml" value="0.4" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/news_section.xml" value="0.4" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/portfolio_item.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/portfolio_section.xml" value="0.264" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/result_top_section.xml" value="0.21875" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_about.xml" value="0.21875" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_header.xml" value="0.22826086956521738" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_insights.xml" value="0.10989583333333333" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_news.xml" value="0.21875" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_stats.xml" value="0.21875" />
+        <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/section_top.xml" value="0.264" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/stats_section.xml" value="0.264" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/layout/toolbar.xml" value="0.4" />
         <entry key="..\:/Users/iveny/projects/Iven-Yao.github.io/androidteddy/app/src/main/res/menu/search.xml" value="0.25" />

@@ -19,6 +19,7 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView d;
     private final TextView dp;
     private final ImageView trending;
+    private final ImageView chev;
     private final DecimalFormat df = new DecimalFormat("0.00");
     private final View view;
 
@@ -31,7 +32,11 @@ public class PortfolioItemViewHolder extends RecyclerView.ViewHolder {
         d = itemView.findViewById(R.id.portfolio_d);
         dp = itemView.findViewById(R.id.portfolio_dp);
         trending = itemView.findViewById(R.id.portfolio_trending);
+        chev = itemView.findViewById(R.id.portfolio_chevron_right);
+    }
 
+    public ImageView getChev() {
+        return chev;
     }
 
     public void setSymbol(String val) {

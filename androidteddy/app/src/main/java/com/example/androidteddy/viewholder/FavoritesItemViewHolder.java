@@ -19,6 +19,7 @@ public class FavoritesItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView d;
     private final TextView dp;
     private final ImageView ic;
+    private final ImageView chev;
     private final DecimalFormat df = new DecimalFormat("0.00");
     private final View view;
 
@@ -31,6 +32,11 @@ public class FavoritesItemViewHolder extends RecyclerView.ViewHolder {
         d = itemView.findViewById(R.id.fav_d);
         dp = itemView.findViewById(R.id.fav_dp);
         ic = itemView.findViewById(R.id.fav_ic);
+        chev = itemView.findViewById(R.id.fav_chevron_right);
+    }
+
+    public ImageView getChev() {
+        return chev;
     }
 
     public void setSymbol(String val) {

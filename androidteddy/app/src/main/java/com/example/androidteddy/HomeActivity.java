@@ -147,7 +147,6 @@ public class HomeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int itemIndex, long id) {
                 String queryString=(String)adapterView.getItemAtPosition(itemIndex);
                 ac.setText("" + queryString.split(" | ")[0]);
-                Toast.makeText(HomeActivity.this, "you clicked " + queryString, Toast.LENGTH_LONG).show();
                 searchView.setQuery(ac.getText(), true);
             }
         });

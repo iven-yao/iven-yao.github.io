@@ -57,10 +57,10 @@ public class PortfolioSection extends Section {
         pHolder.setDP((Float) itemList.get(position).get("dp"));
 
         String query = (String)itemList.get(position).get("symbol");
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        pHolder.getChev().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Context context = holder.itemView.getContext();
+                Context context = pHolder.itemView.getContext();
                 Intent intent = new Intent(context, SearchResultActivity.class);
                 intent.putExtra("query",query.toUpperCase());
                 context.startActivity(intent);

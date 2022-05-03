@@ -44,6 +44,7 @@
             <include layout="@layout/section_stats"/>
             <include layout="@layout/section_about"/>
             <include layout="@layout/section_insights"/>
+            <include layout="@layout/section_news"/>
         </LinearLayout>
     </ScrollView>
 

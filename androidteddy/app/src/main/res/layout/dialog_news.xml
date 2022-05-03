@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="15dp"
+    android:paddingTop="40dp"
+    android:paddingBottom="20dp"
+    android:background="@drawable/rounded_corner_white">
+
+    <TextView
+        android:id="@+id/dialog_source"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:text="Yahoo"
+        />
+
+    <TextView
+        android:id="@+id/dialog_timeago"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2 minutes ago"
+        android:paddingBottom="20dp"
+        android:layout_below="@id/dialog_source"
+        />
+
+    <View
+        android:id="@+id/dialog_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider"
+        android:layout_below="@id/dialog_timeago"/>
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PLACEHOLDER"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:paddingVertical="10dp"
+        android:layout_below="@id/dialog_divider"/>
+
+    <TextView
+        android:id="@+id/dialog_summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="10"
+        android:textSize="15dp"
+        android:text=""
+        android:textColor="@color/black"
+        android:layout_below="@id/dialog_title"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="20dp"
+        android:layout_below="@id/dialog_summary"
+        >
+        <ImageView
+            android:id="@+id/chrome_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_chrome"/>
+
+        <ImageView
+            android:id="@+id/twitter_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_twitter_circled"/>
+
+        <ImageView
+            android:id="@+id/fb_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_icons8_facebook"/>
+    </LinearLayout>
+
+</RelativeLayout>

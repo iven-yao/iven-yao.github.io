@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:hint="0"
+        android:inputType="numberDecimal"
         android:paddingVertical="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/trade_title" />
